@@ -1,25 +1,41 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
-
 /**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
+ * DESIGN PHILOSOPHY: Organic Tech Futurism
+ * - Dark theme with luminous violet/cyan accents
+ * - Glass-morphic cards with backdrop blur
+ * - Organic wave dividers between sections
+ * - Smooth scroll with parallax effects
  */
-export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
 
+import { motion } from "framer-motion";
+import Navigation from "@/components/Navigation";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import ProjectsSection from "@/components/ProjectsSection";
+import SkillsSection from "@/components/SkillsSection";
+import EducationSection from "@/components/EducationSection";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
+
+export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      {/* Ambient background gradient mesh */}
+      <div className="fixed inset-0 gradient-mesh pointer-events-none" />
+      
+      <Navigation />
+      
       <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
+        <HeroSection />
+        <AboutSection />
+        <ExperienceSection />
+        <ProjectsSection />
+        <SkillsSection />
+        <EducationSection />
+        <ContactSection />
       </main>
+      
+      <Footer />
     </div>
   );
 }
