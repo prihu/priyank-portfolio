@@ -1,45 +1,45 @@
 /**
- * Education Section - Organic Tech Futurism
- * Education and certifications with glass-morphic cards
+ * Education Section - COMPACT & VISUAL
+ * Clean cards with minimal text, maximum impact
  */
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
-import { GraduationCap, Award, Calendar, MapPin } from "lucide-react";
+import { useRef, useState } from "react";
+import { GraduationCap, Award, MapPin, Calendar, ExternalLink } from "lucide-react";
 
 const education = [
   {
-    institution: "Institute of Management Technology",
-    degree: "MBA, Finance",
-    location: "Ghaziabad, India",
-    period: "Graduated Mar 2018",
-    description: "Specialized in Finance with focus on financial analytics, investment management, and strategic decision-making.",
+    institution: "IMT Ghaziabad",
+    degree: "MBA Finance",
+    year: "2018",
+    location: "India",
+    logo: "🎓",
+    color: "from-violet-500 to-purple-600",
   },
   {
-    institution: "Birla Institute of Technology and Science, Pilani",
-    degree: "Bachelor of Engineering",
-    field: "Electronics and Instrumentation",
+    institution: "BITS Pilani",
+    degree: "B.E. Electronics",
+    year: "2014",
     location: "Goa, India",
-    period: "Graduated Dec 2014",
-    description: "Strong foundation in engineering principles, signal processing, and control systems.",
+    logo: "🏛️",
+    color: "from-cyan-500 to-teal-600",
   },
 ];
 
 const certifications = [
-  { name: "Data-driven Product Management Simulator", issuer: "GoPractice, Inc" },
-  { name: "CutShort Certified Data Science - Basic", issuer: "CutShort" },
-  { name: "Product Management", issuer: "Udemy" },
-  { name: "Problem Solving with Excel", issuer: "Coursera" },
-  { name: "Fundamentals of Quantitative Modeling", issuer: "Coursera" },
-  { name: "Introduction to Marketing", issuer: "Coursera" },
-  { name: "R Programming", issuer: "Coursera" },
-  { name: "Advanced HTML 5 Training", issuer: "Infinite Skills Inc" },
+  { name: "Data-driven PM Simulator", issuer: "GoPractice", icon: "📊" },
+  { name: "Data Science - Basic", issuer: "CutShort", icon: "🔬" },
+  { name: "Product Management", issuer: "Udemy", icon: "📦" },
+  { name: "R Programming", issuer: "Coursera", icon: "📈" },
+  { name: "Quantitative Modeling", issuer: "Coursera", icon: "🧮" },
+  { name: "Marketing Fundamentals", issuer: "Coursera", icon: "📣" },
 ];
 
 export default function EducationSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [hoveredCert, setHoveredCert] = useState<number | null>(null);
 
   return (
     <section
@@ -55,103 +55,117 @@ export default function EducationSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-primary font-mono text-sm uppercase tracking-wider mb-4 block">
+          <motion.span 
+            className="inline-block text-primary font-mono text-sm uppercase tracking-wider mb-4 px-4 py-2 rounded-full bg-primary/10 border border-primary/20"
+            whileHover={{ scale: 1.05 }}
+          >
             Background
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
+          </motion.span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold">
             Education &{" "}
-            <span className="gradient-text-primary">Certifications</span>
+            <span className="gradient-text-primary">Credentials</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A strong academic foundation combined with continuous learning 
-            through industry certifications.
-          </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Education */}
-          <div>
-            <motion.h3
-              initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="flex items-center gap-3 text-xl font-display font-bold mb-6"
-            >
-              <GraduationCap className="w-6 h-6 text-primary" />
-              Education
-            </motion.h3>
-
-            <div className="space-y-6">
-              {education.map((edu, index) => (
-                <motion.div
-                  key={edu.institution}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card p-6"
-                >
-                  <h4 className="text-lg font-display font-semibold text-foreground mb-1">
-                    {edu.institution}
-                  </h4>
-                  <p className="text-primary font-medium mb-3">
-                    {edu.degree}
-                    {edu.field && <span className="text-muted-foreground"> in {edu.field}</span>}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-3">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>{edu.period}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      <span>{edu.location}</span>
+        <div className="max-w-5xl mx-auto">
+          {/* Education Cards */}
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            {education.map((edu, index) => (
+              <motion.div
+                key={edu.institution}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group"
+              >
+                <div className="glass-card p-6 h-full relative overflow-hidden">
+                  {/* Gradient overlay on hover */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${edu.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                  
+                  <div className="flex items-start gap-4 relative">
+                    <motion.div
+                      whileHover={{ rotate: 10, scale: 1.1 }}
+                      className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${edu.color} flex items-center justify-center text-3xl shadow-lg`}
+                    >
+                      {edu.logo}
+                    </motion.div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-display font-bold text-foreground mb-1">
+                        {edu.institution}
+                      </h3>
+                      <p className={`font-medium bg-gradient-to-r ${edu.color} bg-clip-text text-transparent mb-2`}>
+                        {edu.degree}
+                      </p>
+                      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {edu.year}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-4 h-4" />
+                          {edu.location}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {edu.description}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+                  
+                  {/* Hover indicator */}
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${edu.color}`}
+                    style={{ originX: 0 }}
+                  />
+                </div>
+              </motion.div>
+            ))}
           </div>
 
           {/* Certifications */}
-          <div>
-            <motion.h3
-              initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex items-center gap-3 text-xl font-display font-bold mb-6"
-            >
-              <Award className="w-6 h-6 text-secondary" />
-              Certifications
-            </motion.h3>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="glass-card p-6"
-            >
-              <div className="space-y-4">
-                {certifications.map((cert, index) => (
-                  <motion.div
-                    key={cert.name}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
-                    className="flex items-start gap-3 pb-4 border-b border-border/50 last:border-0 last:pb-0"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-secondary mt-2 shrink-0" />
-                    <div>
-                      <p className="text-foreground font-medium">{cert.name}</p>
-                      <p className="text-sm text-muted-foreground">{cert.issuer}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <Award className="w-5 h-5 text-secondary" />
+              <h3 className="text-xl font-display font-bold">Certifications</h3>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-3">
+              {certifications.map((cert, index) => (
+                <motion.div
+                  key={cert.name}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ duration: 0.3, delay: 0.4 + index * 0.05 }}
+                  onMouseEnter={() => setHoveredCert(index)}
+                  onMouseLeave={() => setHoveredCert(null)}
+                  whileHover={{ scale: 1.1, y: -5 }}
+                  className={`relative px-4 py-2.5 rounded-xl cursor-pointer transition-all ${
+                    hoveredCert === index
+                      ? "bg-gradient-to-r from-violet-600 to-cyan-600 text-white shadow-lg shadow-violet-500/25"
+                      : "bg-white/5 border border-white/10 text-foreground hover:border-primary/30"
+                  }`}
+                >
+                  <span className="mr-2">{cert.icon}</span>
+                  <span className="font-medium">{cert.name}</span>
+                  
+                  {/* Tooltip */}
+                  {hoveredCert === index && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg bg-background/95 border border-border text-xs text-muted-foreground whitespace-nowrap z-10"
+                    >
+                      {cert.issuer}
+                    </motion.div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

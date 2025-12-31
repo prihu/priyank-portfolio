@@ -1,39 +1,60 @@
 /**
- * About Section - Organic Tech Futurism
- * Glass-morphic card with executive summary
+ * About Section - VISUAL & INTERACTIVE
+ * Animated cards, hover effects, minimal text, maximum impact
  */
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
-import { Sparkles, TrendingUp, Users, Zap } from "lucide-react";
+import { useRef, useState } from "react";
+import { Sparkles, TrendingUp, Users, Zap, Brain, Rocket, Target, Award } from "lucide-react";
 
 const highlights = [
   {
-    icon: Sparkles,
-    title: "AI & LLM Expertise",
-    description: "Pioneering Agentic Voice AI and Gen-AI driven speech analytics in consumer banking",
+    icon: Brain,
+    title: "AI Pioneer",
+    stat: "LLM & Voice AI",
+    description: "Building Agentic AI systems",
+    color: "from-violet-500 to-purple-600",
+    bgGlow: "violet",
   },
   {
     icon: TrendingUp,
-    title: "Scale & Growth",
-    description: "Scaled platforms to 3M+ monthly applicants and $250M loan transaction value",
+    title: "Scale Expert",
+    stat: "$250M+",
+    description: "Loan value delivered",
+    color: "from-cyan-500 to-teal-600",
+    bgGlow: "cyan",
   },
   {
     icon: Users,
-    title: "Customer Impact",
-    description: "Supporting 10M+ customers through omnichannel engagement platforms",
+    title: "Customer Focus",
+    stat: "10M+",
+    description: "Customers supported",
+    color: "from-orange-500 to-amber-600",
+    bgGlow: "orange",
   },
   {
     icon: Zap,
-    title: "Efficiency Gains",
-    description: "Reduced loan approval time by 80% with ML-driven underwriting",
+    title: "Efficiency",
+    stat: "80%",
+    description: "Faster approvals",
+    color: "from-pink-500 to-rose-600",
+    bgGlow: "pink",
   },
+];
+
+const expertise = [
+  { label: "Agentic AI", level: 95 },
+  { label: "Product Strategy", level: 92 },
+  { label: "LLM Integration", level: 90 },
+  { label: "Fintech Scaling", level: 95 },
+  { label: "ML/Data Products", level: 88 },
 ];
 
 export default function AboutSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   return (
     <section
@@ -46,9 +67,9 @@ export default function AboutSection() {
         <img
           src="/images/about-section-bg.png"
           alt=""
-          className="w-full h-full object-cover opacity-30"
+          className="w-full h-full object-cover opacity-20"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
       </div>
 
       <div className="container relative z-10 px-4 sm:px-6 lg:px-8">
@@ -59,80 +80,141 @@ export default function AboutSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-primary font-mono text-sm uppercase tracking-wider mb-4 block">
+          <motion.span 
+            className="inline-block text-primary font-mono text-sm uppercase tracking-wider mb-4 px-4 py-2 rounded-full bg-primary/10 border border-primary/20"
+            whileHover={{ scale: 1.05 }}
+          >
             About Me
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
+          </motion.span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mb-6">
             Building the Future of{" "}
             <span className="gradient-text-primary">Fintech</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Product Manager with 7+ years of experience scaling fintech products across lending, 
-            telesales, and customer service platforms, with a focus on LLM-based Agentic AI 
-            & Generative AI-powered solutions.
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            7+ years transforming financial services with AI-powered products
           </p>
         </motion.div>
 
-        {/* Main Content */}
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Left - Executive Summary */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="glass-card p-8 lg:p-10"
-          >
-            <h3 className="text-2xl font-display font-bold mb-6 gradient-text-primary">
-              Executive Summary
-            </h3>
-            <div className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>
-                I'm a Product Manager passionate about leveraging cutting-edge AI technologies 
-                to transform financial services. My journey spans from building ML-powered 
-                underwriting systems to deploying Agentic Voice AI that serves millions of customers.
-              </p>
-              <p>
-                At <span className="text-foreground font-medium">IndusInd Bank</span>, I'm currently 
-                leading the development of next-generation consumer banking products, integrating 
-                Gen-AI/LLM driven speech analytics that have lifted conversions by 25% and enhanced 
-                customer NPS by 30 points.
-              </p>
-              <p>
-                Previously at <span className="text-foreground font-medium">Prefr (acquired by CRED)</span>, 
-                I grew the platform to serve Google, Cars24, and Paisabazaar as primary lending API 
-                infrastructure, processing $250M+ in loan transactions monthly.
-              </p>
-              <p>
-                I believe in building products that are not just technically sophisticated but 
-                genuinely improve people's financial lives—making credit accessible, processes 
-                efficient, and experiences delightful.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Right - Highlights Grid */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            {highlights.map((highlight, index) => (
+        {/* Interactive Highlight Cards */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {highlights.map((item, index) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              onMouseEnter={() => setHoveredCard(index)}
+              onMouseLeave={() => setHoveredCard(null)}
+              className="relative group cursor-pointer"
+            >
               <motion.div
-                key={highlight.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                className="glass-card p-6 group hover:border-primary/30 transition-all"
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="glass-card p-6 h-full relative overflow-hidden"
               >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <highlight.icon className="w-6 h-6 text-primary" />
+                {/* Animated background glow */}
+                <motion.div
+                  className={`absolute -inset-1 bg-gradient-to-r ${item.color} rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`}
+                />
+                
+                {/* Icon */}
+                <motion.div
+                  whileHover={{ rotate: 360, scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-4 shadow-lg`}
+                >
+                  <item.icon className="w-7 h-7 text-white" />
+                </motion.div>
+
+                {/* Content */}
+                <h3 className="text-lg font-display font-bold text-foreground mb-1">
+                  {item.title}
+                </h3>
+                <div className={`text-3xl font-display font-bold bg-gradient-to-r ${item.color} bg-clip-text text-transparent mb-2`}>
+                  {item.stat}
                 </div>
-                <h4 className="text-lg font-display font-semibold mb-2 text-foreground">
-                  {highlight.title}
-                </h4>
                 <p className="text-sm text-muted-foreground">
-                  {highlight.description}
+                  {item.description}
                 </p>
+
+                {/* Hover indicator */}
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: hoveredCard === index ? "100%" : 0 }}
+                  className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r ${item.color}`}
+                />
               </motion.div>
-            ))}
-          </div>
+            </motion.div>
+          ))}
         </div>
+
+        {/* Expertise Bars */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="max-w-3xl mx-auto"
+        >
+          <div className="glass-card p-8">
+            <h3 className="text-2xl font-display font-bold mb-8 text-center">
+              Core <span className="gradient-text-primary">Expertise</span>
+            </h3>
+            <div className="space-y-6">
+              {expertise.map((skill, index) => (
+                <motion.div
+                  key={skill.label}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+                >
+                  <div className="flex justify-between mb-2">
+                    <span className="font-medium text-foreground">{skill.label}</span>
+                    <span className="text-primary font-mono">{skill.level}%</span>
+                  </div>
+                  <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={isInView ? { width: `${skill.level}%` } : {}}
+                      transition={{ duration: 1, delay: 0.6 + index * 0.1, ease: "easeOut" }}
+                      className="h-full bg-gradient-to-r from-violet-500 to-cyan-500 rounded-full relative"
+                    >
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0"
+                        animate={{ x: ["-100%", "200%"] }}
+                        transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+                      />
+                    </motion.div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Quick Stats Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="flex flex-wrap justify-center gap-8 mt-16"
+        >
+          {[
+            { icon: Target, label: "Projects Shipped", value: "20+" },
+            { icon: Award, label: "Companies Served", value: "5+" },
+            { icon: Rocket, label: "Products Launched", value: "15+" },
+          ].map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              whileHover={{ scale: 1.1 }}
+              className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/5 border border-white/10"
+            >
+              <stat.icon className="w-5 h-5 text-primary" />
+              <div>
+                <div className="text-2xl font-display font-bold gradient-text-primary">{stat.value}</div>
+                <div className="text-xs text-muted-foreground">{stat.label}</div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

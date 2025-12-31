@@ -1,53 +1,58 @@
 /**
- * Contact Section - Organic Tech Futurism
- * Contact information and call-to-action
+ * Contact Section - VISUAL & INTERACTIVE
+ * Eye-catching CTA with animated elements
  */
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
-import { Mail, Phone, MapPin, Github, Linkedin, FileText, Send } from "lucide-react";
+import { useRef, useState } from "react";
+import { Mail, Phone, MapPin, Github, Linkedin, FileText, Send, Sparkles, ArrowRight, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
-const contactInfo = [
+const contactMethods = [
   {
     icon: Mail,
     label: "Email",
     value: "priyankgarg28@gmail.com",
     href: "mailto:priyankgarg28@gmail.com",
+    color: "from-violet-500 to-purple-600",
+    copyable: true,
   },
   {
     icon: Phone,
     label: "Phone",
     value: "+91-9755443790",
     href: "tel:+919755443790",
+    color: "from-cyan-500 to-teal-600",
+    copyable: true,
   },
   {
     icon: MapPin,
     label: "Location",
     value: "Gurgaon, India",
     href: null,
+    color: "from-orange-500 to-amber-600",
+    copyable: false,
   },
 ];
 
 const socialLinks = [
-  {
-    icon: Github,
-    label: "GitHub",
-    href: "https://github.com/prihu",
-    color: "hover:text-white",
-  },
-  {
-    icon: Linkedin,
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/gargpriyank",
-    color: "hover:text-[#0077b5]",
-  },
+  { icon: Github, href: "https://github.com/prihu", label: "GitHub", color: "hover:bg-white/20" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/gargpriyank", label: "LinkedIn", color: "hover:bg-[#0077b5]/20" },
 ];
 
 export default function ContactSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
+  const handleCopy = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    toast.success("Copied to clipboard!");
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
 
   return (
     <section
@@ -55,9 +60,25 @@ export default function ContactSection() {
       ref={ref}
       className="relative py-24 lg:py-32 overflow-hidden"
     >
-      {/* Background */}
+      {/* Animated Background */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-violet-500/10 via-transparent to-transparent" />
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-500/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
       </div>
 
       <div className="container relative z-10 px-4 sm:px-6 lg:px-8">
@@ -68,139 +89,152 @@ export default function ContactSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-primary font-mono text-sm uppercase tracking-wider mb-4 block">
-            Get in Touch
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
-            Let's{" "}
-            <span className="gradient-text-primary">Connect</span>
+          <motion.span 
+            className="inline-flex items-center gap-2 text-primary font-mono text-sm uppercase tracking-wider mb-4 px-4 py-2 rounded-full bg-primary/10 border border-primary/20"
+            whileHover={{ scale: 1.05 }}
+          >
+            <Sparkles className="w-4 h-4" />
+            Let's Connect
+          </motion.span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mb-6">
+            Ready to{" "}
+            <span className="gradient-text-primary">Build Together?</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Interested in discussing product opportunities, AI innovations, 
-            or fintech strategies? I'd love to hear from you.
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Looking for a PM who can scale products with AI? Let's talk.
           </p>
         </motion.div>
 
         <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="glass-card p-8"
-            >
-              <h3 className="text-xl font-display font-bold mb-6 text-foreground">
-                Contact Information
-              </h3>
+          {/* Main CTA Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="glass-card p-8 lg:p-12 mb-8 relative overflow-hidden"
+          >
+            {/* Animated border gradient */}
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-cyan-500/20 to-violet-500/20 opacity-50" />
+            
+            <div className="relative">
+              {/* Status Badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ delay: 0.4 }}
+                className="flex items-center justify-center gap-2 mb-8"
+              >
+                <motion.span
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-3 h-3 rounded-full bg-green-400"
+                />
+                <span className="text-lg font-medium text-foreground">
+                  Open to MAANG & Top Tech Opportunities
+                </span>
+              </motion.div>
 
-              <div className="space-y-6">
-                {contactInfo.map((item, index) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                    className="flex items-center gap-4"
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 text-white font-semibold px-10 py-7 text-lg rounded-xl shadow-lg shadow-violet-500/25 w-full sm:w-auto"
+                    asChild
                   >
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <item.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">{item.label}</p>
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          className="text-foreground font-medium hover:text-primary transition-colors"
-                        >
-                          {item.value}
-                        </a>
-                      ) : (
-                        <p className="text-foreground font-medium">{item.value}</p>
-                      )}
+                    <a href="mailto:priyankgarg28@gmail.com">
+                      <Send className="w-5 h-5 mr-2" />
+                      Send Email
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </a>
+                  </Button>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-2 border-white/20 hover:bg-white/10 backdrop-blur-sm px-10 py-7 text-lg rounded-xl w-full sm:w-auto"
+                    asChild
+                  >
+                    <a href="/Priyank_Garg_CV.pdf" target="_blank" rel="noopener noreferrer">
+                      <FileText className="w-5 h-5 mr-2" />
+                      Download Resume
+                    </a>
+                  </Button>
+                </motion.div>
+              </div>
+
+              {/* Contact Methods */}
+              <div className="grid sm:grid-cols-3 gap-4">
+                {contactMethods.map((method, index) => (
+                  <motion.div
+                    key={method.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: 0.5 + index * 0.1 }}
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    className="group"
+                  >
+                    <div 
+                      className="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all cursor-pointer"
+                      onClick={() => {
+                        if (method.copyable) {
+                          handleCopy(method.value, index);
+                        } else if (method.href) {
+                          window.location.href = method.href;
+                        }
+                      }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${method.color} flex items-center justify-center`}>
+                          <method.icon className="w-5 h-5 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-muted-foreground mb-0.5">{method.label}</p>
+                          <p className="text-sm font-medium text-foreground truncate">{method.value}</p>
+                        </div>
+                        {method.copyable && (
+                          <motion.div
+                            whileHover={{ scale: 1.2 }}
+                            className="text-muted-foreground hover:text-foreground"
+                          >
+                            {copiedIndex === index ? (
+                              <Check className="w-4 h-4 text-green-400" />
+                            ) : (
+                              <Copy className="w-4 h-4" />
+                            )}
+                          </motion.div>
+                        )}
+                      </div>
                     </div>
                   </motion.div>
                 ))}
               </div>
+            </div>
+          </motion.div>
 
-              {/* Social Links */}
-              <div className="mt-8 pt-6 border-t border-border">
-                <p className="text-sm text-muted-foreground mb-4">Connect on social</p>
-                <div className="flex items-center gap-3">
-                  {socialLinks.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-muted-foreground ${link.color} transition-all hover:scale-110`}
-                      aria-label={link.label}
-                    >
-                      <link.icon className="w-5 h-5" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* CTA Card */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="glass-card p-8 flex flex-col justify-between"
-            >
-              <div>
-                <h3 className="text-xl font-display font-bold mb-4 text-foreground">
-                  Open to Opportunities
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  I'm currently exploring new opportunities where I can leverage my 
-                  expertise in AI-powered product development and fintech scaling. 
-                  If you're building something innovative, let's talk.
-                </p>
-
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    <span className="text-muted-foreground">Available for senior PM roles</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-2 h-2 rounded-full bg-primary" />
-                    <span className="text-muted-foreground">Interested in AI/ML product opportunities</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-2 h-2 rounded-full bg-secondary" />
-                    <span className="text-muted-foreground">Open to fintech & consumer tech</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 space-y-3">
-                <Button
-                  size="lg"
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-                  asChild
-                >
-                  <a href="mailto:priyankgarg28@gmail.com">
-                    <Send className="w-4 h-4 mr-2" />
-                    Send Email
-                  </a>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full border-border hover:bg-white/5"
-                  asChild
-                >
-                  <a href="/Priyank_Garg_CV.pdf" target="_blank" rel="noopener noreferrer">
-                    <FileText className="w-4 h-4 mr-2" />
-                    Download Resume
-                  </a>
-                </Button>
-              </div>
-            </motion.div>
-          </div>
+          {/* Social Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.8 }}
+            className="flex items-center justify-center gap-4"
+          >
+            <span className="text-muted-foreground">Connect on</span>
+            {socialLinks.map((link) => (
+              <motion.a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                whileTap={{ scale: 0.9 }}
+                className={`p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 text-foreground transition-all ${link.color}`}
+              >
+                <link.icon className="w-6 h-6" />
+              </motion.a>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>

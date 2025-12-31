@@ -1,17 +1,9 @@
 /**
- * Footer Component - Organic Tech Futurism
- * Minimal footer with copyright and quick links
+ * Footer Component - MINIMAL & ELEGANT
  */
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Heart } from "lucide-react";
-
-const quickLinks = [
-  { href: "#about", label: "About" },
-  { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
-];
+import { Github, Linkedin, Mail, Heart, ArrowUp } from "lucide-react";
 
 const socialLinks = [
   { icon: Github, href: "https://github.com/prihu", label: "GitHub" },
@@ -22,70 +14,64 @@ const socialLinks = [
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="relative py-12 border-t border-border/50">
+    <footer className="relative py-12 border-t border-border/30">
+      {/* Gradient line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+      
       <div className="container px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Logo & Copyright */}
-          <div className="text-center md:text-left">
-            <motion.a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="text-2xl font-bold font-display gradient-text-primary inline-block mb-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Priyank Garg
-            </motion.a>
-            <p className="text-sm text-muted-foreground">
-              Senior Product Manager | Fintech & AI
-            </p>
-          </div>
+        <div className="flex flex-col items-center gap-6">
+          {/* Back to top */}
+          <motion.button
+            onClick={scrollToTop}
+            whileHover={{ y: -5, scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="p-3 rounded-full bg-white/5 border border-white/10 hover:border-primary/30 text-muted-foreground hover:text-foreground transition-all"
+          >
+            <ArrowUp className="w-5 h-5" />
+          </motion.button>
 
-          {/* Quick Links */}
-          <div className="flex flex-wrap items-center justify-center gap-6">
-            {quickLinks.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => scrollToSection(link.href)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {link.label}
-              </button>
-            ))}
-          </div>
+          {/* Logo */}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="text-3xl font-display font-bold gradient-text-primary"
+          >
+            Priyank Garg
+          </motion.div>
 
           {/* Social Links */}
           <div className="flex items-center gap-4">
             {socialLinks.map((link) => (
-              <a
+              <motion.a
                 key={link.label}
                 href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                target={link.href.startsWith("http") ? "_blank" : undefined}
+                rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 text-muted-foreground hover:text-foreground transition-all"
                 aria-label={link.label}
               >
                 <link.icon className="w-5 h-5" />
-              </a>
+              </motion.a>
             ))}
           </div>
-        </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-8 pt-8 border-t border-border/50 text-center">
-          <p className="text-sm text-muted-foreground">
-            © {currentYear} Priyank Garg. All rights reserved.
+          {/* Copyright */}
+          <p className="text-sm text-muted-foreground text-center">
+            © {currentYear} Priyank Garg. Crafted with{" "}
+            <motion.span
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+              className="inline-block text-red-500"
+            >
+              ❤️
+            </motion.span>{" "}
+            for innovation.
           </p>
         </div>
       </div>
