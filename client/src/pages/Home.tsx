@@ -1,16 +1,17 @@
 /**
- * DESIGN PHILOSOPHY: Organic Tech Futurism
+ * DESIGN PHILOSOPHY: Organic Tech Futurism + PM Narrative
  * - Dark theme with luminous violet/cyan accents
  * - Glass-morphic cards with backdrop blur
- * - Organic wave dividers between sections
- * - Smooth scroll with parallax effects
+ * - Strategic storytelling for senior PM roles
+ * - Case studies with structured PM thinking
  */
 
-import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
+import PhilosophySection from "@/components/PhilosophySection";
 import ExperienceSection from "@/components/ExperienceSection";
+import CaseStudiesSection from "@/components/CaseStudiesSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import SkillsSection from "@/components/SkillsSection";
 import EducationSection from "@/components/EducationSection";
@@ -28,7 +29,9 @@ export default function Home() {
       <main>
         <HeroSection />
         <AboutSection />
+        <PhilosophySection />
         <ExperienceSection />
+        <CaseStudiesSection />
         <ProjectsSection />
         <SkillsSection />
         <EducationSection />
