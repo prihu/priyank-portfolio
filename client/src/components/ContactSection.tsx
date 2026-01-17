@@ -6,7 +6,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, Phone, MapPin, Github, Linkedin, FileText, Send, Sparkles, ArrowRight, Copy, Check } from "lucide-react";
+import { Mail, Phone, MapPin, Github, Linkedin, FileText, Send, Sparkles, ArrowRight, Copy, Check, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -139,12 +139,12 @@ export default function ContactSection() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 text-white font-semibold px-10 py-7 text-lg rounded-xl shadow-lg shadow-violet-500/25 w-full sm:w-auto"
+                    className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold px-10 py-7 text-lg rounded-xl shadow-lg w-full sm:w-auto"
                     asChild
                   >
-                    <a href="mailto:priyankgarg28@gmail.com">
-                      <Send className="w-5 h-5 mr-2" />
-                      Send Email
+                    <a href="https://calendly.com/priyankgarg/mock-interview-clone" target="_blank" rel="noopener noreferrer">
+                      <Calendar className="w-5 h-5 mr-2" />
+                      Book a Call
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </a>
                   </Button>
@@ -152,8 +152,20 @@ export default function ContactSection() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
                     size="lg"
+                    className="bg-gradient-to-r from-accent to-orange-500 hover:from-accent/90 hover:to-orange-500/90 text-white font-semibold px-10 py-7 text-lg rounded-xl shadow-lg w-full sm:w-auto"
+                    asChild
+                  >
+                    <a href="mailto:priyankgarg28@gmail.com">
+                      <Send className="w-5 h-5 mr-2" />
+                      Send Email
+                    </a>
+                  </Button>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    size="lg"
                     variant="outline"
-                    className="border-2 border-white/20 hover:bg-white/10 backdrop-blur-sm px-10 py-7 text-lg rounded-xl w-full sm:w-auto"
+                    className="border-2 border-primary/30 hover:bg-primary/5 px-10 py-7 text-lg rounded-xl w-full sm:w-auto"
                     asChild
                   >
                     <a href="/Priyank_Garg_CV.pdf" target="_blank" rel="noopener noreferrer">
