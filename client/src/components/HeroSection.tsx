@@ -45,10 +45,10 @@ export default function HeroSection() {
               <motion.span
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-2 h-2 rounded-full bg-green-500"
+                className="w-2 h-2 rounded-full bg-orange-500"
               />
               <span className="text-sm font-medium text-primary">
-                Open to MAANG Opportunities
+                Seeking High-Velocity, Ownership-Driven Roles
               </span>
             </motion.div>
 
