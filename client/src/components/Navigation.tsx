@@ -1,19 +1,20 @@
 /**
- * Navigation Component - Organic Tech Futurism
- * Glass-morphic sticky navigation with smooth scroll links
+ * Navigation Component - Clean Professional
+ * Sticky navigation with smooth scroll links
  */
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Github, Linkedin, Mail, FileText } from "lucide-react";
+import { Menu, X, Github, Linkedin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#philosophy", label: "Approach" },
-  { href: "#experience", label: "Experience" },
+  { href: "#about", label: "Story" },
+  { href: "#how-i-think", label: "How I Think" },
+  { href: "#experience", label: "Work" },
   { href: "#case-studies", label: "Case Studies" },
   { href: "#projects", label: "Projects" },
+  { href: "#exploring", label: "What's Next" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -45,7 +46,7 @@ export default function Navigation() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
+            ? "bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-sm"
             : "bg-transparent"
         }`}
       >
@@ -58,11 +59,11 @@ export default function Navigation() {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="text-xl lg:text-2xl font-bold font-display gradient-text-primary"
+              className="text-xl lg:text-2xl font-bold font-display text-foreground"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              PG
+              Priyank<span className="text-primary">.</span>
             </motion.a>
 
             {/* Desktop Navigation */}
@@ -71,7 +72,7 @@ export default function Navigation() {
                 <motion.button
                   key={link.href}
                   onClick={() => scrollToSection(link.href)}
-                  className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-white/5"
+                  className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted/50"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -103,10 +104,12 @@ export default function Navigation() {
                 <Linkedin className="w-5 h-5" />
               </motion.a>
               <Button
-                onClick={() => scrollToSection("#contact")}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                onClick={() => window.open("https://calendly.com/priyankgarg/mock-interview-clone", "_blank")}
+                className="bg-foreground text-background hover:bg-foreground/90"
+                size="sm"
               >
-                Get in Touch
+                <Calendar className="w-4 h-4 mr-2" />
+                Book a Call
               </Button>
             </div>
 
@@ -133,7 +136,7 @@ export default function Navigation() {
             className="fixed inset-0 z-40 lg:hidden"
           >
             <div
-              className="absolute inset-0 bg-background/95 backdrop-blur-xl"
+              className="absolute inset-0 bg-background/98 backdrop-blur-xl"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
@@ -156,12 +159,24 @@ export default function Navigation() {
                 </motion.button>
               ))}
               
-              <div className="flex items-center gap-4 mt-6 pt-6 border-t border-border">
+              <div className="mt-6 pt-6 border-t border-border">
+                <a
+                  href="https://calendly.com/priyankgarg/mock-interview-clone"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-foreground text-background font-semibold text-sm"
+                >
+                  <Calendar className="w-4 h-4" />
+                  Book a Call
+                </a>
+              </div>
+
+              <div className="flex items-center gap-4 mt-4">
                 <a
                   href="https://github.com/prihu"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 rounded-full bg-white/5 text-foreground"
+                  className="p-3 rounded-full bg-muted text-foreground"
                 >
                   <Github className="w-6 h-6" />
                 </a>
@@ -169,15 +184,9 @@ export default function Navigation() {
                   href="https://www.linkedin.com/in/gargpriyank"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 rounded-full bg-white/5 text-foreground"
+                  className="p-3 rounded-full bg-muted text-foreground"
                 >
                   <Linkedin className="w-6 h-6" />
-                </a>
-                <a
-                  href="mailto:priyankgarg28@gmail.com"
-                  className="p-3 rounded-full bg-white/5 text-foreground"
-                >
-                  <Mail className="w-6 h-6" />
                 </a>
               </div>
             </motion.div>

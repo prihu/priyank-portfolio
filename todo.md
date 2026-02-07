@@ -1,0 +1,32 @@
+# Project TODO
+
+- [x] Basic homepage layout
+- [x] Navigation menu
+- [x] Hero section with photo and Calendly
+- [x] About section with career narrative
+- [x] Experience section with storytelling
+- [x] Case studies section
+- [x] Projects section with PM lens
+- [x] Skills section
+- [x] Education section
+- [x] Contact section with Calendly integration
+- [x] Footer
+- [x] Light theme design
+- [x] Add professional headshot
+- [x] Add Calendly booking link
+- [x] Database backend for testimonials and blogs
+- [x] Testimonials section (database-backed)
+- [x] Blogs section (database-backed)
+- [x] Admin editing capability for testimonials and blogs
+- [x] SEO fixes (keywords, meta description, alt text)
+- [x] GitHub repository export
+- [x] Deployment documentation
+- [x] Fix missing text / dark theme rendering issues (text invisible on dark bg with light theme CSS)
+- [x] Redesign with unique storytelling narrative inspired by Lovable culture + Sara Altier
+- [x] Add "Revenue Engine Builder" narrative arc throughout portfolio
+- [x] Create "How I Think" section showing Lovable-aligned traits (high agency, moves fast, chaos→structure)
+- [x] Add "Currently Exploring" section with specific role criteria
+- [x] Reframe hero with unique positioning and personality
+- [x] Update case studies with Challenge → Action → Result format
+- [x] Ensure light theme works properly with all text visible
+- [x] Write vitest tests for new components
