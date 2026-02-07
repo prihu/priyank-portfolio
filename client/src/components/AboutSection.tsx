@@ -66,7 +66,7 @@ export default function AboutSection() {
       <div className="absolute inset-0 z-0">
         <img
           src="/images/about-section-bg.png"
-          alt=""
+          alt="Abstract gradient background for About section"
           className="w-full h-full object-cover opacity-20"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />

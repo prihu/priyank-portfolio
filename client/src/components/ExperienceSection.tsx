@@ -120,7 +120,7 @@ export default function ExperienceSection() {
       <div className="absolute inset-0 z-0">
         <img
           src="/images/experience-timeline-bg.png"
-          alt=""
+          alt="Timeline background for career experience section"
           className="w-full h-full object-cover opacity-10"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/98 to-background" />
