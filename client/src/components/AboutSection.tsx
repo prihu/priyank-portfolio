@@ -1,37 +1,37 @@
 /**
- * About Section - The Origin Story
- * Not a boring bio. A narrative arc showing how each career move built on the last.
+ * About Section - The "Lens" Story
+ * Focuses on how each career phase added a new mental model (Engineering -> Finance -> Product).
  */
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
+import { Cpu, TrendingUp, Users } from "lucide-react";
 
 const journeySteps = [
   {
-    phase: "The Foundation",
-    period: "BITS Pilani → IMT Ghaziabad",
-    narrative: "Started as an electronics engineer who could build circuits, then added the financial lens at IMT. This dual wiring — engineering precision meets financial intuition — became my unfair advantage.",
-    highlight: "Engineering + Finance = Rare Dual Lens",
+    phase: "The Engineer's Lens",
+    period: "BITS Pilani",
+    icon: Cpu,
+    narrative: "It started with circuits and code. This phase wired my brain for systems thinking. I learned that every complex problem can be broken down into composable parts, and if you optimize the subsystems, the whole machine runs faster.",
+    highlight: "System Architecture & Logic",
+    color: "text-blue-600 bg-blue-50 border-blue-200",
   },
   {
-    phase: "The First Engine",
-    period: "NeoGrowth Credit",
-    narrative: "Cut my teeth in MSME lending. Talked to 150+ merchants. Built NeoScore — an ML model that turned 30-minute loan approvals into 5-minute decisions. Watched loan volumes jump 6x. That's when I learned: the best products eliminate friction, not add features.",
-    highlight: "6x loan volumes through ML automation",
+    phase: "The Investor's Lens",
+    period: "IMT Ghaziabad",
+    icon: TrendingUp,
+    narrative: "Engineering taught me *how* to build, but Finance taught me *what* creates value. I learned to look at products not just as code, but as cash flow engines. CAC, LTV, and Margins aren't just metrics—they are design constraints.",
+    highlight: "Unit Economics & Risk",
+    color: "text-emerald-600 bg-emerald-50 border-emerald-200",
   },
   {
-    phase: "The Scale Machine",
-    period: "Prefr (acquired by CRED)",
-    narrative: "Took a lending API from zero to $250M+ in transaction value. Built the infrastructure that powered Google, Cars24, and Paisabazaar's lending. Grew to 3M+ monthly applicants. This wasn't product management — it was building a revenue engine that ran 24/7.",
-    highlight: "$250M+ lending infrastructure at scale",
-  },
-  {
-    phase: "The AI Frontier",
-    period: "IndusInd Bank",
-    narrative: "Now I'm doing something that hasn't been done in Indian banking: turning a 400+ agent contact center into an AI-powered operation. Piloting voice AI that serves 2M+ additional customers without adding headcount. This is where AI meets real business impact.",
-    highlight: "Pioneering AI in traditional banking",
+    phase: "The Product Lens",
+    period: "The Builder Years",
+    icon: Users,
+    narrative: "This is where the lenses converged. I don't just write specs; I build systems that are technically sound (Engineering) and commercially viable (Finance). Whether it's lending APIs or Voice AI, the goal is always the same: scalable value.",
+    highlight: "Empathy & Execution",
+    color: "text-violet-600 bg-violet-50 border-violet-200",
   },
 ];
 
@@ -50,81 +50,60 @@ export default function AboutSection() {
           className="mb-16"
         >
           <p className="text-sm font-mono tracking-wider text-muted-foreground uppercase mb-3">
-            The Arc
+            The Evolution
           </p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-4">
-            Each Move, a <span className="gradient-text">Bigger Problem</span>
+            How My <span className="gradient-text">Lens Evolved</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl">
-            My career isn't a list of job titles. It's a story of solving 
-            progressively harder problems — each building on the last.
+            My career isn't a linear path. It's a stacking of different mental models.
+            Each phase added a new layer to how I see product problems.
           </p>
         </motion.div>
 
-        {/* Journey Timeline */}
-        <div className="relative max-w-4xl mx-auto">
-          {/* Connecting line */}
-          <div className="absolute left-4 lg:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/10 via-primary/30 to-primary/10" />
-
-          <div className="space-y-10">
-            {journeySteps.map((step, index) => (
+        {/* Journey Options - Cards instead of Timeline */}
+        <div className="grid md:grid-cols-3 gap-6">
+          {journeySteps.map((step, index) => {
+            const Icon = step.icon;
+            return (
               <motion.div
                 key={step.phase}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
-                className={`relative pl-12 lg:pl-0 lg:grid lg:grid-cols-2 lg:gap-12 items-start`}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+                className="h-full"
               >
-                {/* Timeline dot */}
-                <div className="absolute left-2.5 lg:left-1/2 lg:-translate-x-1/2 top-8 w-3 h-3 rounded-full bg-primary border-2 border-background shadow-md z-10" />
-
-                {/* Content */}
-                <div className={`${index % 2 === 0 ? "lg:text-right lg:pr-12" : "lg:col-start-2 lg:pl-12"}`}>
-                  <div className="p-6 rounded-2xl border border-border bg-card/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
-                    {/* Phase label */}
-                    <div className={`flex items-center gap-3 mb-3 ${index % 2 === 0 ? "lg:justify-end" : ""}`}>
-                      <span className="text-xs font-mono text-primary bg-primary/10 px-3 py-1 rounded-full">
-                        {step.phase}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {step.period}
-                      </span>
+                <div className="p-6 h-full rounded-2xl border border-border bg-card/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300 flex flex-col">
+                  {/* Icon & Phase */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`p-2 rounded-lg ${step.color} border`}>
+                      <Icon className="w-5 h-5" />
                     </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground">{step.phase}</h3>
+                      <p className="text-xs text-muted-foreground">{step.period}</p>
+                    </div>
+                  </div>
 
-                    {/* Narrative */}
-                    <p className="text-base text-foreground/80 leading-relaxed mb-4">
-                      {step.narrative}
+                  {/* Narrative */}
+                  <p className="text-sm text-foreground/80 leading-relaxed mb-6 flex-grow">
+                    {step.narrative}
+                  </p>
+
+                  {/* Highlight */}
+                  <div className="pt-4 border-t border-border/50">
+                    <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-1">
+                      Key Takeaway
                     </p>
-
-                    {/* Highlight */}
-                    <div className={`flex items-center gap-2 text-sm font-semibold text-primary ${index % 2 === 0 ? "lg:justify-end" : ""}`}>
-                      <ArrowRight className="w-4 h-4" />
+                    <div className="font-medium text-foreground text-sm">
                       {step.highlight}
                     </div>
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-
-        {/* The Thread */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 text-center"
-        >
-          <div className="inline-block p-6 sm:p-8 rounded-2xl border border-primary/20 bg-primary/5">
-            <p className="text-lg sm:text-xl font-display font-semibold text-foreground mb-2">
-              The Common Thread?
-            </p>
-            <p className="text-base text-muted-foreground max-w-lg mx-auto">
-              Every role, I found a broken system, turned it into a machine, 
-              and left it running at 10x the scale I found it.
-            </p>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

@@ -1,198 +1,119 @@
 /**
- * Experience Section - Story-Driven
- * Each role tells a story: What was broken → What I did → What changed
+ * Experience Section - The Condensed Timeline
+ * High-level context only. Specifics are in Case Studies.
  */
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { ChevronDown, MapPin, Building2 } from "lucide-react";
+import { useRef } from "react";
+import { ArrowUpRight, Building2, Calendar } from "lucide-react";
 
-interface RoleStory {
-  company: string;
-  title: string;
-  period: string;
-  location: string;
-  theProblem: string;
-  whatIBuilt: string[];
-  theResult: string;
-  borderColor: string;
-}
-
-const roles: RoleStory[] = [
+const experiences = [
   {
     company: "IndusInd Bank",
-    title: "DVP Product — Consumer Banking",
-    period: "Aug 2024 → Present",
-    location: "Gurgaon, India",
-    theProblem: "A 400+ agent contact center struggling with 300K daily call attempts, low connectivity, and zero AI infrastructure in a traditional banking setup.",
-    whatIBuilt: [
-      "Deployed Gen-AI/LLM driven speech analytics on next-gen Dialer — reduced agent idle time by 30%, lifted conversions by 25%",
-      "Built inbound routing with mapped agents, CSAT capture, and contextual communications — enhanced NPS by 30 points",
-      "Integrated CRM + Dialer into unified omnichannel platform — lifted agent productivity by 20%",
-      "Piloted Agentic Voice AI relationship manager using LLMs — serving 2M+ additional customers without headcount increases",
-    ],
-    theResult: "25% connectivity across 300K daily calls, supporting 10M+ customers. Pioneering AI-first contact center transformation in Indian banking.",
-    borderColor: "border-l-blue-500",
+    role: "DVP Product — Consumer Banking",
+    period: "2024 — Present",
+    context: "Leading the AI transformation of a legacy banking contact center.",
+    win: "Deployed Voice AI that handles 2M+ calls/month.",
+    lesson: "AI isn't about replacing humans; it's about removing robot work from humans.",
   },
   {
     company: "Prefr (acquired by CRED)",
-    title: "Product Manager — Growth & Customer Service",
-    period: "Jan 2021 → Aug 2024",
-    location: "Hyderabad, India",
-    theProblem: "A lending API platform that needed to scale from early stage to becoming the infrastructure powering Google, Cars24, and Paisabazaar's lending operations.",
-    whatIBuilt: [
-      "Grew platform to 3M+ monthly applicants and $250M loan transaction value — serving as primary lending API infrastructure",
-      "Launched BNPL product for Flipkart Wholesale, Waycool, Elasticrun — achieved 70% repeat usage among 20K+ merchants",
-      "Boosted credit score fetch to 99%, statement uploads by 30%, KYC completion by 15% through bureau fallback and AI-driven flows",
-      "Built fraud detection system leveraging transaction, liveness, and KYC data — eliminated 70% of manual review effort",
-    ],
-    theResult: "From early-stage to $250M+ TPV. The lending API became the invisible infrastructure behind India's biggest consumer lending platforms.",
-    borderColor: "border-l-teal-500",
+    role: "Product Manager — Growth",
+    period: "2021 — 2024",
+    context: "Scaled a lending API from early traction to market infrastructure.",
+    win: "Built the engine behind $250M+ in loans.",
+    lesson: "In fintech, your product is only as good as your risk model.",
   },
   {
     company: "NeoGrowth Credit",
-    title: "Associate Product Manager — Onboarding",
-    period: "May 2018 → Jan 2021",
-    location: "Mumbai, India",
-    theProblem: "MSME loan approvals took 30 minutes of manual review. The sales team was using outdated tools. Product-market fit was unclear.",
-    whatIBuilt: [
-      "Built NeoScore ML model for automated bank-statement analysis — slashed approval from 30 min to 5 min, accelerated volumes by 6x",
-      "Launched NeoExpress product — captured 50% of new business volume, added $10M+ incremental loans in 3 months",
-      "Conducted 150+ merchant interviews to optimize CAC by 10% and strengthen product-market fit",
-      "Rebuilt internal sales app with iterative launches — increased adoption by 50%",
-    ],
-    theResult: "Transformed MSME lending from manual drudgery to ML-powered speed. Proved that automation doesn't replace human judgment — it amplifies it.",
-    borderColor: "border-l-orange-500",
+    role: "Associate Product Manager",
+    period: "2018 — 2021",
+    context: "Digitizing MSME lending for the first time.",
+    win: " slashed approval times by 6x with ML.",
+    lesson: "Speed is the ultimate feature in lending.",
   },
 ];
 
 export default function ExperienceSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const [expandedRole, setExpandedRole] = useState<number>(0);
 
   return (
-    <section id="experience" ref={ref} className="relative py-24 lg:py-32 bg-muted/30">
+    <section id="experience" ref={ref} className="relative py-24 lg:py-32 bg-secondary/5">
       <div className="container px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-16"
-        >
-          <p className="text-sm font-mono tracking-wider text-muted-foreground uppercase mb-3">
-            The Work
-          </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-4">
-            What Was Broken. <span className="gradient-text">What I Fixed.</span>
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Not a list of responsibilities. Each role is a story of finding a problem 
-            and building the system that solved it.
-          </p>
-        </motion.div>
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="sticky top-32"
+          >
+            <p className="text-sm font-mono tracking-wider text-muted-foreground uppercase mb-3">
+              The Path
+            </p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
+              Building at <span className="gradient-text">Scale</span>
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 text-balance">
+              I've spent my career in high-stakes environment where "move fast and break things"
+              isn't an option — because it's people's money.
+            </p>
 
-        {/* Roles */}
-        <div className="max-w-4xl mx-auto space-y-6">
-          {roles.map((role, index) => (
-            <motion.div
-              key={role.company}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <div
-                className={`rounded-2xl border border-border ${role.borderColor} border-l-4 bg-card overflow-hidden transition-all duration-300 ${
-                  expandedRole === index ? "shadow-lg" : "hover:shadow-md"
-                }`}
+            <div className="p-6 rounded-2xl border border-primary/20 bg-primary/5 inline-block">
+              <p className="text-sm font-medium text-foreground mb-2">
+                Looking for the deep dive?
+              </p>
+              <p className="text-sm text-muted-foreground mb-4">
+                I've written detailed case studies on the specific problems,
+                bets, and outcomes for these roles.
+              </p>
+              <a
+                href="#case-studies"
+                className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:underline"
               >
-                {/* Header - Always visible */}
-                <button
-                  onClick={() => setExpandedRole(expandedRole === index ? -1 : index)}
-                  className="w-full p-6 flex items-center justify-between text-left"
-                >
-                  <div>
-                    <div className="flex items-center gap-3 mb-1">
-                      <Building2 className="w-4 h-4 text-primary" />
-                      <span className="font-display font-bold text-lg text-foreground">
-                        {role.company}
-                      </span>
-                      {index === 0 && (
-                        <span className="px-2 py-0.5 text-xs font-medium bg-green-500/15 text-green-600 rounded-full border border-green-500/20">
-                          Current
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                      <span className="font-medium text-foreground/80">{role.title}</span>
-                      <span>•</span>
-                      <span>{role.period}</span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        {role.location}
-                      </span>
-                    </div>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: expandedRole === index ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <ChevronDown className="w-5 h-5 text-muted-foreground" />
-                  </motion.div>
-                </button>
+                Jump to Case Studies <ArrowUpRight className="w-4 h-4" />
+              </a>
+            </div>
+          </motion.div>
 
-                {/* Expanded Content */}
-                <motion.div
-                  initial={false}
-                  animate={{
-                    height: expandedRole === index ? "auto" : 0,
-                    opacity: expandedRole === index ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden"
-                >
-                  <div className="px-6 pb-6 space-y-5">
-                    {/* The Problem */}
-                    <div>
-                      <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-2">
-                        The Problem
-                      </p>
-                      <p className="text-sm text-foreground/80 leading-relaxed italic border-l-2 border-primary/30 pl-4">
-                        {role.theProblem}
-                      </p>
-                    </div>
+          {/* Timeline */}
+          <div className="space-y-8">
+            {experiences.map((exp, index) => (
+              <motion.div
+                key={exp.company}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group relative pl-8 border-l border-border hover:border-primary/50 transition-colors"
+              >
+                <div className="absolute -left-1.5 top-2 w-3 h-3 rounded-full bg-border group-hover:bg-primary transition-colors" />
 
-                    {/* What I Built */}
-                    <div>
-                      <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-3">
-                        What I Built
-                      </p>
-                      <div className="space-y-2">
-                        {role.whatIBuilt.map((item, i) => (
-                          <div key={i} className="flex items-start gap-3 text-sm text-foreground/80">
-                            <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                            <span>{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                <div className="mb-2 flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
+                    {exp.company}
+                  </h3>
+                  <span className="text-xs font-mono text-muted-foreground flex items-center gap-1 bg-background px-2 py-1 rounded-full border border-border">
+                    <Calendar className="w-3 h-3" />
+                    {exp.period}
+                  </span>
+                </div>
 
-                    {/* The Result */}
-                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
-                      <p className="text-xs font-mono text-primary uppercase tracking-wider mb-1">
-                        The Result
-                      </p>
-                      <p className="text-sm font-medium text-foreground">
-                        {role.theResult}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-          ))}
+                <p className="text-sm font-medium text-primary mb-3">
+                  {exp.role}
+                </p>
+
+                <p className="text-base text-foreground/80 mb-3">
+                  {exp.context} <span className="font-semibold text-foreground">{exp.win}</span>
+                </p>
+
+                <div className="text-sm text-muted-foreground italic pl-4 border-l-2 border-primary/20">
+                  "{exp.lesson}"
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

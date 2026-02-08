@@ -2,6 +2,11 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, InsertTestimonial, testimonials, InsertBlog, blogs } from "../drizzle/schema";
 import { ENV } from './_core/env';
+import * as supabaseDb from '../shared/supabase';
+import { getVisiblePosts, getAllPostsForAdmin, type SubstackPost } from '../shared/substack';
+
+// Check if we're using Supabase
+const USE_SUPABASE = !!(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY);
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -89,48 +94,78 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// Testimonials queries
+// Testimonials queries - Now uses Supabase when available
 export async function getAllTestimonials() {
+  if (USE_SUPABASE) {
+    return supabaseDb.getAllTestimonials();
+  }
+
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db.select().from(testimonials).where(eq(testimonials.isPublished, true));
 }
 
 export async function createTestimonial(data: InsertTestimonial) {
+  if (USE_SUPABASE) {
+    return supabaseDb.createTestimonial({
+      quote: data.quote,
+      author: data.author,
+      role: data.role,
+      company: data.company,
+      is_published: true
+    });
+  }
+
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   const result = await db.insert(testimonials).values(data);
   return result;
 }
 
 export async function updateTestimonial(id: number, data: Partial<InsertTestimonial>) {
+  if (USE_SUPABASE) {
+    return supabaseDb.updateTestimonial(id, {
+      quote: data.quote,
+      author: data.author,
+      role: data.role,
+      company: data.company,
+      is_published: data.isPublished
+    });
+  }
+
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   return await db.update(testimonials).set(data).where(eq(testimonials.id, id));
 }
 
 export async function deleteTestimonial(id: number) {
+  if (USE_SUPABASE) {
+    return supabaseDb.deleteTestimonial(id);
+  }
+
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   return await db.delete(testimonials).where(eq(testimonials.id, id));
 }
 
-// Blogs queries
-export async function getAllBlogs() {
-  const db = await getDb();
-  if (!db) return [];
-  
-  return await db.select().from(blogs).where(eq(blogs.isPublished, true));
+// Blogs queries - Now fetches from Substack RSS
+export async function getAllBlogs(): Promise<SubstackPost[]> {
+  return getVisiblePosts();
 }
 
+export async function getAllBlogsForAdmin(): Promise<SubstackPost[]> {
+  return getAllPostsForAdmin();
+}
+
+// Legacy MySQL blog functions (kept for backwards compatibility)
 export async function createBlog(data: InsertBlog) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   const result = await db.insert(blogs).values(data);
   return result;
 }
@@ -138,13 +173,13 @@ export async function createBlog(data: InsertBlog) {
 export async function updateBlog(id: number, data: Partial<InsertBlog>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   return await db.update(blogs).set(data).where(eq(blogs.id, id));
 }
 
 export async function deleteBlog(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   return await db.delete(blogs).where(eq(blogs.id, id));
 }

@@ -19,8 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-const RESUME_URL =
-  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663269140862/jNqoIdznxFjlrNUT.pdf";
+const RESUME_URL = "/Priyank_Garg_Resume.pdf";
 
 export default function ContactSection() {
   const ref = useRef(null);

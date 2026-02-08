@@ -4,24 +4,45 @@
  */
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Github, Linkedin, Mail, ArrowRight, Zap } from "lucide-react";
+import { Calendar, Github, Linkedin, Mail, ArrowRight, Zap, Target, TrendingUp, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
-const HEADSHOT_URL = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663269140862/ZvFgfCGILBMHwDuA.jpg";
-const RESUME_URL = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663269140862/jNqoIdznxFjlrNUT.pdf";
+const HEADSHOT_URL = "/headshot.jpg";
+const RESUME_URL = "/Priyank_Garg_Resume.pdf";
 
-const engineParts = [
-  { label: "Voice AI that serves 2M+ customers", delay: 0 },
-  { label: "Lending APIs processing $250M+", delay: 0.1 },
-  { label: "ML models that cut approval from 30min → 5min", delay: 0.2 },
-  { label: "Growth loops with 70% repeat usage", delay: 0.3 },
+const coreCompetencies = [
+  { label: "Revenue Systems", icon: TrendingUp, delay: 0 },
+  { label: "AI Product Strategy", icon: Brain, delay: 0.1 },
+  { label: "Fintech Infrastructure", icon: Cpu, delay: 0.2 },
+  { label: "0 → 1 → Scale", icon: Target, delay: 0.3 },
 ];
+
+// Helper component for icons
+function Brain(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />
+      <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" />
+    </svg>
+  );
+}
 
 export default function HeroSection() {
   const roles = [
     "Revenue Engine Builder",
-    "AI Product Leader",
+    "Product Strategist",
     "Chaos → Structure Specialist",
     "Fintech Scale Architect",
   ];
@@ -59,7 +80,7 @@ export default function HeroSection() {
               transition={{ delay: 0.2 }}
               className="text-sm font-mono tracking-wider text-muted-foreground mb-4 uppercase"
             >
-              I don't just build products.
+              Beyond Features. Beyond Roadmaps.
             </motion.p>
 
             {/* Main Statement */}
@@ -104,32 +125,33 @@ export default function HeroSection() {
             >
               <p className="text-lg text-foreground/80 leading-relaxed">
                 <span className="font-semibold text-foreground">Priyank Garg.</span>{" "}
-                7 years turning messy fintech problems into machines that print money.
-                From a 30-minute loan approval that I compressed to 5 minutes,
-                to an AI voice agent that serves 2 million customers without adding a single headcount.
+                7 years at the intersection of <span className="text-foreground font-medium">Engineering, Finance, and Product.</span>
               </p>
-              <p className="text-base text-muted-foreground mt-3 italic">
-                Engineering brain (BITS Pilani). Finance instinct (IMT Ghaziabad). Builder DNA.
+              <p className="text-lg text-foreground/80 leading-relaxed mt-2">
+                I don't just ship software. I architect systems that solve complex business problems,
+                from automating lending decisions to building AI-first customer operations.
               </p>
             </motion.div>
 
-            {/* What I've Built - Engine Parts */}
+            {/* Core Competencies - High level, not metrics */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="mb-8 space-y-2"
+              className="mb-8 grid grid-cols-2 sm:grid-cols-4 gap-4"
             >
-              {engineParts.map((part, i) => (
+              {coreCompetencies.map((comp, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 + part.delay }}
-                  className="flex items-center gap-3 text-sm text-foreground/70"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.7 + comp.delay }}
+                  className="flex flex-col items-start gap-2 p-3 rounded-lg bg-secondary/5 border border-border/50 hover:bg-secondary/10 transition-colors"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                  {part.label}
+                  <comp.icon className="w-5 h-5 text-primary" />
+                  <span className="text-xs font-semibold text-foreground/90 leading-tight">
+                    {comp.label}
+                  </span>
                 </motion.div>
               ))}
             </motion.div>
@@ -209,7 +231,7 @@ export default function HeroSection() {
             <div className="relative w-full max-w-sm">
               {/* Glow */}
               <div className="absolute -inset-4 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/15 rounded-3xl blur-2xl" />
-              
+
               {/* Photo */}
               <div className="relative rounded-2xl overflow-hidden border border-border shadow-xl">
                 <img

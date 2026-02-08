@@ -16,18 +16,19 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+
 const caseStudies = [
   {
     id: 1,
     title: "From Call Center Chaos to AI-Powered Conversations",
     subtitle: "IndusInd Bank — Voice AI Contact Center",
-    tagline: "2M+ customers served without adding headcount",
+    tagline: "2M+ customers served. 65% deflection. Zero headcount added.",
     color: "from-blue-600 to-indigo-600",
     lightColor: "bg-blue-50 border-blue-200",
     iconColor: "text-blue-600",
     sections: {
       problem: {
-        title: "What Was Broken",
+        title: "The Reality",
         content:
           "IndusInd Bank's contact center was drowning. 2M+ customers calling monthly, average wait time of 8 minutes, and agent turnover at 40% annually. The cost per interaction was $4.50 and climbing. Leadership wanted to cut costs. I saw a different problem: customers weren't getting answers fast enough.",
         painPoints: [
@@ -38,18 +39,17 @@ const caseStudies = [
         ],
       },
       hypothesis: {
-        title: "My Bet",
+        title: "The Bet",
         content:
           "I didn't pitch 'let's add a chatbot.' I pitched: 'What if 60% of calls never needed a human?' The hypothesis was that most calls were routine — balance checks, EMI schedules, payment confirmations. If we could handle those with voice AI that actually understood context, we'd free agents for complex cases.",
         bets: [
           "60% of calls are routine and automatable with voice AI",
           "Customers prefer instant AI answers over waiting for humans",
           "Voice AI with context awareness can match human satisfaction scores",
-          "Freed agents can handle complex cases better, improving overall NPS",
         ],
       },
       solution: {
-        title: "What I Built",
+        title: "The System",
         content:
           "I designed an Agentic Voice AI system using ElevenLabs for natural speech synthesis, integrated with the bank's core systems. The key insight: don't make it sound like a bot. Make it sound like the best agent you've ever spoken to.",
         components: [
@@ -65,14 +65,10 @@ const caseStudies = [
             name: "Voice Synthesis",
             desc: "ElevenLabs integration with bank-specific terminology training for natural conversations",
           },
-          {
-            name: "Escalation Protocol",
-            desc: "Seamless handoff to human agents with full context transfer — no customer repetition",
-          },
         ],
       },
-      impact: {
-        title: "What Happened",
+      outcome: {
+        title: "The Evidence",
         content:
           "Within 6 months of launch, the numbers told the story. But the real win wasn't the cost savings — it was that customer satisfaction actually went up. People preferred the AI for routine queries because it was faster.",
         results: [
@@ -88,21 +84,16 @@ const caseStudies = [
             metric: "12-second average response",
             detail: "Down from 8-minute wait time — customers get answers instantly",
           },
-          {
-            metric: "+15 NPS improvement",
-            detail: "Customer satisfaction increased despite less human interaction",
-          },
         ],
       },
-      learnings: {
-        title: "What I'd Do Differently",
+      tradeoffs: {
+        title: "The Trade-offs",
         content:
-          "The biggest mistake was launching with too many intents at once. We should have started with 3 high-volume intents, perfected them, then expanded. Also, I underestimated the change management needed — agents felt threatened until we repositioned AI as their 'first line of defense' that handles the boring stuff.",
+          "To move fast, we had to make hard choices. We de-prioritized multi-lingual support in the MVP to focus on perfect English/Hindi handling. We also chose to use a more expensive voice model (ElevenLabs) over cheaper alternatives because trust was our primary metric, not just cost.",
         insights: [
-          "Start narrow, perfect 3 intents, then expand. Don't try to boil the ocean on day one.",
-          "Change management is 50% of the work. Technology is the easy part.",
-          "Voice AI quality is non-negotiable — one bad interaction erases trust from 10 good ones.",
-          "Measure deflection AND satisfaction together. Deflection without satisfaction is just abandonment.",
+          "Quality > Cost: Cheap voice AI sounds robotic and kills trust immediately.",
+          "Depth > Breadth: Perfecting 3 intents is better than failing at 30.",
+          "Speed > Features: We skipped the fancy dashboard to ship the core engine 2 months early.",
         ],
       },
     },
@@ -111,58 +102,53 @@ const caseStudies = [
     id: 2,
     title: "Turning a Manual Lending Process into a Revenue Machine",
     subtitle: "Prefr (CRED) — Digital Lending Platform",
-    tagline: "$250M+ in loans, 80% faster approvals",
+    tagline: "$250M+ in loans. 5-minute approvals. 70% repeat rate.",
     color: "from-emerald-600 to-teal-600",
     lightColor: "bg-emerald-50 border-emerald-200",
     iconColor: "text-emerald-600",
     sections: {
       problem: {
-        title: "What Was Broken",
+        title: "The Reality",
         content:
           "When I joined Prefr (acquired by CRED), the lending process was a Frankenstein of spreadsheets, manual credit checks, and phone calls. A single loan took 30 minutes to approve. The conversion funnel leaked at every step — 70% of applicants dropped off before completion.",
         painPoints: [
           "30-minute average loan approval time",
           "70% application drop-off rate",
           "Manual credit scoring with inconsistent criteria",
-          "No real-time risk assessment — decisions took hours for edge cases",
+          "No real-time risk assessment",
         ],
       },
       hypothesis: {
-        title: "My Bet",
+        title: "The Bet",
         content:
           "The problem wasn't that we needed better salespeople. The problem was friction. Every manual step was a chance for the customer to leave. My bet: if we could get approval time under 5 minutes with ML-based scoring, conversion would double.",
         bets: [
           "Speed is the #1 driver of conversion in digital lending",
           "ML models can match or exceed human credit analysts for standard profiles",
           "Real-time bureau integration eliminates the biggest bottleneck",
-          "A 6x speed improvement would create word-of-mouth growth",
         ],
       },
       solution: {
-        title: "What I Built",
+        title: "The System",
         content:
           "I designed a three-layer lending engine: instant pre-qualification, ML-based credit scoring, and automated disbursement. The key architectural decision was to make bureau pulls asynchronous — start the UX flow while data loads in the background.",
         components: [
           {
             name: "Instant Pre-Qual",
-            desc: "30-second soft check using phone number + PAN, giving users a range before they commit to a full application",
+            desc: "30-second soft check using phone number + PAN, giving users a range before they commit",
           },
           {
             name: "ML Credit Engine",
-            desc: "Gradient-boosted model trained on 500K+ historical loans, scoring in <3 seconds with 92% accuracy vs. manual",
-          },
-          {
-            name: "Smart Document OCR",
-            desc: "Auto-extraction from salary slips, bank statements, and ID proofs — eliminating manual data entry",
+            desc: "Gradient-boosted model trained on 500K+ historical loans, scoring in <3 seconds",
           },
           {
             name: "Auto-Disbursement",
-            desc: "Straight-through processing for approved loans — money in account within 2 hours of approval",
+            desc: "Straight-through processing for approved loans — money in account within 2 hours",
           },
         ],
       },
-      impact: {
-        title: "What Happened",
+      outcome: {
+        title: "The Evidence",
         content:
           "The platform went from processing $10M/month to $40M/month within a quarter. But the metric I'm most proud of: repeat borrower rate hit 70%. People came back because the experience was that good.",
         results: [
@@ -171,28 +157,23 @@ const caseStudies = [
             detail: "Down from 30 minutes — an 83% reduction in time-to-decision",
           },
           {
-            metric: "$250M+ total disbursement",
+            metric: "$250M+ total disbursed",
             detail: "Scaled from $10M/month to $40M/month in one quarter",
           },
           {
             metric: "70% repeat borrower rate",
             detail: "Customers returned because the experience was frictionless",
           },
-          {
-            metric: "35% conversion improvement",
-            detail: "Drop-off rate fell from 70% to 45% — more than doubling completions",
-          },
         ],
       },
-      learnings: {
-        title: "What I'd Do Differently",
+      tradeoffs: {
+        title: "The Trade-offs",
         content:
-          "I'd invest more in the pre-qualification step earlier. We spent too long perfecting the full flow before realizing that giving users a 'yes/no' in 30 seconds was the real hook. Also, the ML model needed more diverse training data — it initially underperformed for self-employed applicants.",
+          "We purposely introduced friction for 'thin-file' customers. If the ML model wasn't 90% confident, we forced a manual review. This hurt our instant approval rate but saved us from massive default risk in the early days. Growth at all costs is a trap in lending.",
         insights: [
-          "The 'hook' matters more than the 'flow.' Give users a reason to stay in the first 30 seconds.",
-          "ML models are only as good as their training data. Bias in historical data creates bias in decisions.",
-          "Speed creates trust. When approval is fast, customers assume you're competent.",
-          "Build for the edge cases from day one — they're where your reputation is made or broken.",
+          "Risk > Growth: In lending, bad growth kills you faster than no growth.",
+          "Friction can be a feature: Adding friction for high-risk users is a safety valve.",
+          "Buy vs Build: We bought the KYC solution to speed up launch, even though it cost more margin.",
         ],
       },
     },
@@ -249,9 +230,8 @@ export default function CaseStudiesSection() {
             >
               {/* Header - Always Visible */}
               <div
-                className={`p-6 lg:p-8 cursor-pointer transition-all ${
-                  expandedCase === study.id ? study.lightColor : "hover:bg-muted/30"
-                }`}
+                className={`p-6 lg:p-8 cursor-pointer transition-all ${expandedCase === study.id ? study.lightColor : "hover:bg-muted/30"
+                  }`}
                 onClick={() =>
                   setExpandedCase(expandedCase === study.id ? null : study.id)
                 }
@@ -297,8 +277,8 @@ export default function CaseStudiesSection() {
                             problem: AlertTriangle,
                             hypothesis: Lightbulb,
                             solution: Wrench,
-                            impact: TrendingUp,
-                            learnings: BookOpen,
+                            outcome: TrendingUp,
+                            tradeoffs: BookOpen,
                           };
                           const Icon = icons[key];
                           return (
@@ -307,11 +287,10 @@ export default function CaseStudiesSection() {
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                               onClick={() => setExpandedSection(key)}
-                              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all text-sm ${
-                                expandedSection === key
-                                  ? `bg-gradient-to-r ${study.color} text-white shadow-lg`
-                                  : "bg-muted/50 text-muted-foreground hover:text-foreground border border-border hover:border-primary/30"
-                              }`}
+                              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all text-sm ${expandedSection === key
+                                ? `bg-gradient-to-r ${study.color} text-white shadow-lg`
+                                : "bg-muted/50 text-muted-foreground hover:text-foreground border border-border hover:border-primary/30"
+                                }`}
                             >
                               <Icon className="w-4 h-4" />
                               {section.title}
@@ -323,7 +302,7 @@ export default function CaseStudiesSection() {
                       {/* Section Content */}
                       {expandedSection &&
                         study.sections[
-                          expandedSection as keyof typeof study.sections
+                        expandedSection as keyof typeof study.sections
                         ] && (
                           <motion.div
                             key={expandedSection}
@@ -334,7 +313,7 @@ export default function CaseStudiesSection() {
                             {(() => {
                               const section =
                                 study.sections[
-                                  expandedSection as keyof typeof study.sections
+                                expandedSection as keyof typeof study.sections
                                 ];
                               return (
                                 <>
