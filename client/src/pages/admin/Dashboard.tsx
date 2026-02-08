@@ -3,7 +3,7 @@
  * Manage testimonials and blog visibility
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
     MessageSquare,
@@ -18,23 +18,19 @@ import {
     Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { trpc } from "@/lib/trpc";
 import { useLocation } from "wouter";
-
-interface Testimonial {
-    id: number;
-    quote: string;
-    author: string;
-    role: string;
-    company: string;
-    isPublished?: boolean;
-}
+import { testimonialsApi, blogsApi, adminApi, type Testimonial, type Blog } from "@/lib/api";
 
 export default function AdminDashboard() {
     const [, setLocation] = useLocation();
     const [activeTab, setActiveTab] = useState<"testimonials" | "blogs">("testimonials");
     const [isAddingTestimonial, setIsAddingTestimonial] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
+    const [isSaving, setIsSaving] = useState(false);
+
+    // Data state
+    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+    const [blogs, setBlogs] = useState<Blog[]>([]);
 
     // Form state
     const [formData, setFormData] = useState({
@@ -44,27 +40,21 @@ export default function AdminDashboard() {
         company: "",
     });
 
-    // tRPC queries and mutations
-    const { data: testimonials = [], refetch: refetchTestimonials } = trpc.testimonials.list.useQuery();
-    const { data: blogs = [], refetch: refetchBlogs } = trpc.blogs.list.useQuery();
+    // Fetch data on mount
+    useEffect(() => {
+        loadTestimonials();
+        loadBlogs();
+    }, []);
 
-    const createTestimonial = trpc.testimonials.create.useMutation({
-        onSuccess: () => {
-            refetchTestimonials();
-            resetForm();
-        },
-    });
+    const loadTestimonials = async () => {
+        const data = await testimonialsApi.list();
+        setTestimonials(data);
+    };
 
-    const updateTestimonial = trpc.testimonials.update.useMutation({
-        onSuccess: () => {
-            refetchTestimonials();
-            setEditingId(null);
-        },
-    });
-
-    const deleteTestimonial = trpc.testimonials.delete.useMutation({
-        onSuccess: () => refetchTestimonials(),
-    });
+    const loadBlogs = async () => {
+        const data = await blogsApi.list();
+        setBlogs(data);
+    };
 
     const resetForm = () => {
         setFormData({ quote: "", author: "", role: "", company: "" });
@@ -72,12 +62,31 @@ export default function AdminDashboard() {
         setEditingId(null);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (editingId) {
-            updateTestimonial.mutate({ id: editingId, ...formData });
-        } else {
-            createTestimonial.mutate(formData);
+        setIsSaving(true);
+        try {
+            if (editingId) {
+                await testimonialsApi.update(editingId, formData);
+            } else {
+                await testimonialsApi.create(formData);
+            }
+            await loadTestimonials();
+            resetForm();
+        } catch (error) {
+            console.error("Error saving testimonial:", error);
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        if (!confirm("Delete this testimonial?")) return;
+        try {
+            await testimonialsApi.delete(id);
+            await loadTestimonials();
+        } catch (error) {
+            console.error("Error deleting testimonial:", error);
         }
     };
 
@@ -93,7 +102,7 @@ export default function AdminDashboard() {
     };
 
     const handleLogout = async () => {
-        await fetch("/api/admin/logout", { method: "POST", credentials: "include" });
+        await adminApi.logout();
         setLocation("/admin");
     };
 
@@ -226,7 +235,7 @@ export default function AdminDashboard() {
                                 </div>
 
                                 <div className="flex gap-3">
-                                    <Button type="submit" disabled={createTestimonial.isPending || updateTestimonial.isPending}>
+                                    <Button type="submit" disabled={isSaving}>
                                         <Save className="w-4 h-4 mr-2" />
                                         {editingId ? "Update" : "Save"}
                                     </Button>
@@ -273,11 +282,7 @@ export default function AdminDashboard() {
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    onClick={() => {
-                                                        if (confirm("Delete this testimonial?")) {
-                                                            deleteTestimonial.mutate({ id: t.id });
-                                                        }
-                                                    }}
+                                                    onClick={() => handleDelete(t.id)}
                                                     className="text-red-500 hover:text-red-600 hover:bg-red-50"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
@@ -297,7 +302,6 @@ export default function AdminDashboard() {
                         <div className="mb-6 p-4 rounded-lg bg-primary/5 border border-primary/20">
                             <p className="text-sm text-foreground">
                                 <strong>Note:</strong> Blog posts are pulled from your Substack RSS feed automatically.
-                                Use the toggles below to show/hide specific posts on your portfolio.
                             </p>
                         </div>
 

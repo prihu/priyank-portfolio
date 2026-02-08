@@ -5,14 +5,18 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Star } from "lucide-react";
-import { trpc } from "@/lib/trpc";
+import { testimonialsApi, type Testimonial } from "@/lib/api";
 
 export default function TestimonialsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const { data: testimonials = [] } = trpc.testimonials.list.useQuery();
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    testimonialsApi.list().then(setTestimonials).catch(() => setTestimonials([]));
+  }, []);
 
   if (testimonials.length === 0) {
     return null; // Don't show section if no testimonials
@@ -38,7 +42,7 @@ export default function TestimonialsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <motion.span 
+          <motion.span
             className="inline-block text-primary font-mono text-sm uppercase tracking-wider mb-4 px-4 py-2 rounded-full bg-primary/10 border border-primary/20"
             whileHover={{ scale: 1.05 }}
           >

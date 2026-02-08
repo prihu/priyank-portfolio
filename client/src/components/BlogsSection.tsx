@@ -4,14 +4,18 @@
  */
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Calendar, ArrowRight, ExternalLink, Pen } from "lucide-react";
-import { trpc } from "@/lib/trpc";
+import { blogsApi, type Blog } from "@/lib/api";
 
 export default function BlogsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const { data: blogs = [] } = trpc.blogs.list.useQuery();
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  useEffect(() => {
+    blogsApi.list().then(setBlogs).catch(() => setBlogs([]));
+  }, []);
 
   // Don't render if no blogs exist
   if (blogs.length === 0) {
@@ -92,13 +96,13 @@ export default function BlogsSection() {
                     <span>
                       {blog.publishedDate
                         ? new Date(blog.publishedDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            }
-                          )
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }
+                        )
                         : ""}
                     </span>
                     <span className="text-xs">· {blog.readTime}</span>

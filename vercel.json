@@ -6,6 +6,26 @@
     "outputDirectory": "dist/public",
     "rewrites": [
         {
+            "source": "/api/admin/login",
+            "destination": "/api/admin/login"
+        },
+        {
+            "source": "/api/admin/logout",
+            "destination": "/api/admin/logout"
+        },
+        {
+            "source": "/api/admin/check",
+            "destination": "/api/admin/check"
+        },
+        {
+            "source": "/api/testimonials",
+            "destination": "/api/testimonials/index"
+        },
+        {
+            "source": "/api/blogs",
+            "destination": "/api/blogs/index"
+        },
+        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
