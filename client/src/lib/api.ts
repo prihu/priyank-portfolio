@@ -16,12 +16,20 @@ export interface Testimonial {
 
 export interface Blog {
     id: number;
+    substackId: string;
     title: string;
     excerpt: string;
     link: string;
     publishedDate: string;
     category: string;
     readTime: string;
+    isVisible: boolean;
+}
+
+export interface BlogsResponse {
+    blogs: Blog[];
+    substackUrl: string;
+    totalCount: number;
 }
 
 const API_BASE = "/api";
@@ -69,10 +77,20 @@ export const testimonialsApi = {
 
 // Blogs API
 export const blogsApi = {
-    list: async (): Promise<Blog[]> => {
-        const res = await fetch(`${API_BASE}/blogs`);
-        if (!res.ok) return [];
+    list: async (): Promise<BlogsResponse> => {
+        const res = await fetch(`${API_BASE}/blogs`, { credentials: "include" });
+        if (!res.ok) return { blogs: [], substackUrl: "", totalCount: 0 };
         return res.json();
+    },
+
+    setVisibility: async (substackId: string, title: string, isVisible: boolean): Promise<void> => {
+        const res = await fetch(`${API_BASE}/blogs`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ substackId, title, isVisible }),
+        });
+        if (!res.ok) throw new Error("Failed to update blog visibility");
     },
 };
 

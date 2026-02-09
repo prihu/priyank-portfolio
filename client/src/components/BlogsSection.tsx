@@ -12,9 +12,16 @@ export default function BlogsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [substackUrl, setSubstackUrl] = useState("");
 
   useEffect(() => {
-    blogsApi.list().then(setBlogs).catch(() => setBlogs([]));
+    blogsApi.list().then((response) => {
+      setBlogs(response.blogs);
+      setSubstackUrl(response.substackUrl);
+    }).catch(() => {
+      setBlogs([]);
+      setSubstackUrl("");
+    });
   }, []);
 
   // Don't render if no blogs exist
@@ -118,6 +125,26 @@ export default function BlogsSection() {
             </motion.div>
           ))}
         </div>
+
+        {/* View More on Substack */}
+        {substackUrl && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="text-center mt-12"
+          >
+            <a
+              href={substackUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-colors group"
+            >
+              <span>View All Posts on Substack</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </motion.div>
+        )}
       </div>
     </section>
   );

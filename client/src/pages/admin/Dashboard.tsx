@@ -52,8 +52,17 @@ export default function AdminDashboard() {
     };
 
     const loadBlogs = async () => {
-        const data = await blogsApi.list();
-        setBlogs(data);
+        const response = await blogsApi.list();
+        setBlogs(response.blogs);
+    };
+
+    const toggleBlogVisibility = async (blog: Blog) => {
+        try {
+            await blogsApi.setVisibility(blog.substackId, blog.title, !blog.isVisible);
+            await loadBlogs();
+        } catch (error) {
+            console.error("Error toggling blog visibility:", error);
+        }
     };
 
     const resetForm = () => {
@@ -302,6 +311,7 @@ export default function AdminDashboard() {
                         <div className="mb-6 p-4 rounded-lg bg-primary/5 border border-primary/20">
                             <p className="text-sm text-foreground">
                                 <strong>Note:</strong> Blog posts are pulled from your Substack RSS feed automatically.
+                                Toggle visibility to show/hide posts on your portfolio.
                             </p>
                         </div>
 
@@ -315,22 +325,39 @@ export default function AdminDashboard() {
                                 {blogs.map((blog) => (
                                     <div
                                         key={blog.id}
-                                        className="p-6 rounded-xl border border-border bg-card flex items-center justify-between"
+                                        className={`p-6 rounded-xl border bg-card flex items-center justify-between transition-all ${blog.isVisible
+                                                ? "border-border hover:border-primary/30"
+                                                : "border-border/50 opacity-60"
+                                            }`}
                                     >
                                         <div className="flex-1">
                                             <h3 className="font-semibold text-foreground mb-1">{blog.title}</h3>
                                             <p className="text-sm text-muted-foreground line-clamp-1">
                                                 {blog.excerpt}
                                             </p>
+                                            <a
+                                                href={blog.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-xs text-primary hover:underline mt-1 inline-block"
+                                            >
+                                                View on Substack →
+                                            </a>
                                         </div>
                                         <div className="flex items-center gap-4 ml-4">
-                                            <span className="text-xs text-muted-foreground">
-                                                {blog.category}
+                                            <button
+                                                onClick={() => toggleBlogVisibility(blog)}
+                                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${blog.isVisible ? "bg-green-500" : "bg-gray-300"
+                                                    }`}
+                                            >
+                                                <span
+                                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${blog.isVisible ? "translate-x-6" : "translate-x-1"
+                                                        }`}
+                                                />
+                                            </button>
+                                            <span className={`text-xs w-16 ${blog.isVisible ? "text-green-600" : "text-gray-400"}`}>
+                                                {blog.isVisible ? "Visible" : "Hidden"}
                                             </span>
-                                            <div className="flex items-center gap-2">
-                                                <Check className="w-4 h-4 text-green-500" />
-                                                <span className="text-xs text-green-600">Visible</span>
-                                            </div>
                                         </div>
                                     </div>
                                 ))}
@@ -342,3 +369,4 @@ export default function AdminDashboard() {
         </div>
     );
 }
+
