@@ -16,9 +16,11 @@ export default function BlogsSection() {
 
   useEffect(() => {
     blogsApi.list().then((response) => {
+      console.log("Blogs fetched:", response.blogs.length);
       setBlogs(response.blogs);
       setSubstackUrl(response.substackUrl);
-    }).catch(() => {
+    }).catch((err) => {
+      console.error("Failed to load blogs:", err);
       setBlogs([]);
       setSubstackUrl("");
     });
