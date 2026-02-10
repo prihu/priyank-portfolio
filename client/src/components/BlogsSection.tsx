@@ -3,14 +3,12 @@
  * Shows database-backed blog posts, or hides if none exist
  */
 
-import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Calendar, ArrowRight, ExternalLink, Pen } from "lucide-react";
 import { blogsApi, type Blog } from "@/lib/api";
 
 export default function BlogsSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [substackUrl, setSubstackUrl] = useState("");
 
@@ -34,7 +32,6 @@ export default function BlogsSection() {
   return (
     <section
       id="blogs"
-      ref={ref}
       className="relative py-24 lg:py-32 overflow-hidden"
     >
       {/* Background */}
@@ -47,7 +44,8 @@ export default function BlogsSection() {
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -70,7 +68,8 @@ export default function BlogsSection() {
             <motion.div
               key={blog.id}
               initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
               whileHover={{ translateY: -8 }}
               className="group"
@@ -132,7 +131,8 @@ export default function BlogsSection() {
         {substackUrl && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
             className="text-center mt-12"
           >
