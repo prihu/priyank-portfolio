@@ -10,7 +10,7 @@ import { blogsApi, type Blog } from "@/lib/api";
 
 export default function BlogsSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [substackUrl, setSubstackUrl] = useState("");
 
