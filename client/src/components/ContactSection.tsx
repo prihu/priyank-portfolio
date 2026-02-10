@@ -174,7 +174,7 @@ export default function ContactSection() {
             className="mt-8 flex items-center justify-center gap-2 text-sm text-muted-foreground"
           >
             <MapPin className="w-4 h-4" />
-            <span>Mumbai, India · Open to remote & hybrid roles</span>
+            <span>Gurugram, India · Open to remote & hybrid roles</span>
           </motion.div>
         </div>
       </div>
