@@ -1,311 +1,95 @@
-# Priyank Garg - Senior Product Manager Portfolio
+# Priyank Garg — Product Manager Portfolio
 
-A production-grade full-stack portfolio website built to showcase your expertise in AI/LLM, Fintech, and Product Management to MAANG companies.
+A full-stack portfolio website showcasing 7+ years of experience scaling fintech products, building AI-powered platforms, and driving revenue growth across lending, telesales, and customer service domains.
 
-**Live Demo:** [Your deployed URL will go here]
+**Live:** [priyankgarg.com](https://priyankgarg.com)
 
-## 🎯 Features
+-----
 
-- **Professional Light Theme** - Executive presence design optimized for recruiters
-- **Interactive Sections** - Hero, About, Philosophy, Experience, Case Studies, Projects, Skills, Education
-- **Testimonials & Blogs** - Database-backed content management system
-- **Calendly Integration** - Direct booking link for intro calls
-- **GitHub Projects Showcase** - Highlights your key repositories
-- **Responsive Design** - Mobile-first, works on all devices
-- **Admin Panel Ready** - Add testimonials and blogs via API
+## What This Site Covers
 
-## 🛠 Tech Stack
+The portfolio is structured as a narrative — not a resume dump. Each section builds on a “Revenue Engine Builder” arc:
 
-- **Frontend:** React 19, TypeScript, Tailwind CSS 4, Framer Motion
-- **Backend:** Express.js, tRPC, Node.js
-- **Database:** MySQL with Drizzle ORM
-- **Deployment:** Railway, Render, or Vercel
-- **CI/CD:** GitHub Actions
+- **Hero** — One-line positioning with Calendly booking link for intro calls
+- **About** — Career story: from BITS Pilani to scaling $250M+ lending infrastructure
+- **How I Think** — Operating principles with real examples (high agency, speed, chaos→structure)
+- **Experience** — IndusInd Bank (DVP Product, 10M+ customers), Prefr/CRED ($250M loan volume), NeoGrowth (6x loan volume growth)
+- **Case Studies** — Challenge → Action → Result deep dives on key initiatives
+- **Projects** — GitHub repos with a PM lens (AI Phone Screening, Fresh Produce AI, this portfolio)
+- **Currently Exploring** — What I am looking for in my next role
+- **Education** — MBA from IMT Ghaziabad, B.E. from BITS Pilani
+- **Testimonials** — Database-backed, managed via admin panel
+- **Blogs** — Auto-synced from [ProductOped Substack](https://productoped.substack.com) with visibility controls
 
-## 📋 Prerequisites
+## Tech Stack
 
-- Node.js 18+ and pnpm
-- MySQL 8.0+
-- GitHub account (for deployment)
-- Railway/Render account (for hosting)
+|Layer        |Technology                                                |
+|-------------|----------------------------------------------------------|
+|Frontend     |React 19, TypeScript, Tailwind CSS 4, Framer Motion       |
+|Backend      |Express.js, tRPC, Vercel Serverless Functions             |
+|Database     |Supabase (PostgreSQL) for testimonials and blog visibility|
+|Content      |Substack RSS feed integration with server-side caching    |
+|UI Components|Radix UI, shadcn/ui, Lucide icons                         |
+|Deployment   |Vercel (auto-deploy from `main`)                          |
+|Testing      |Vitest                                                    |
 
-## 🚀 Quick Start
+## Key Technical Decisions
 
-### Local Development
+- **Supabase over raw MySQL** — Moved from Drizzle/MySQL to Supabase for simpler auth, real-time capabilities, and free-tier hosting. Legacy Drizzle schema retained for local dev.
+- **Substack RSS as blog CMS** — Blog posts are fetched live from Substack’s RSS feed with a 5-minute server cache. Supabase manages per-post visibility toggles so the admin can hide/show posts without touching Substack.
+- **Vercel serverless API** — Separate serverless handlers under `/api/` for testimonials, blogs, and admin auth — no long-running Express server needed in production.
+- **Admin panel with password auth** — Lightweight admin dashboard at `/admin` for managing testimonials and blog visibility. JWT-based session with cookie auth.
 
-```bash
-# Clone repository
-git clone https://github.com/prihu/priyankgarg-portfolio-manus.git
-cd priyankgarg-portfolio-manus
-
-# Install dependencies
-pnpm install
-
-# Create .env file
-cp .env.example .env
-
-# Update DATABASE_URL with your local MySQL connection
-# Example: mysql://root:password@localhost:3306/priyank_portfolio
-
-# Create database
-mysql -u root -p -e "CREATE DATABASE priyank_portfolio;"
-
-# Run migrations
-pnpm db:push
-
-# Start development server
-pnpm dev
-```
-
-Visit `http://localhost:3000`
-
-### Build for Production
-
-```bash
-pnpm build
-pnpm start
-```
-
-## 📦 Project Structure
+## Project Structure
 
 ```
-priyankgarg-portfolio-manus/
-├── client/                 # React frontend
+priyank-portfolio/
+├── client/                  # React SPA
 │   ├── src/
-│   │   ├── components/    # Reusable UI components
-│   │   ├── pages/         # Page components
-│   │   ├── lib/           # Utilities and helpers
-│   │   └── index.css      # Global styles
-│   └── public/            # Static assets
-├── server/                 # Express backend
-│   ├── routers.ts         # tRPC procedure definitions
-│   ├── db.ts              # Database queries
-│   └── _core/             # Core server utilities
-├── drizzle/               # Database schema and migrations
-├── shared/                # Shared types and constants
-└── package.json
+│   │   ├── components/      # Section components (Hero, About, Experience, etc.)
+│   │   ├── pages/           # Home, Admin Dashboard, Admin Login, NotFound
+│   │   ├── contexts/        # Theme context
+│   │   ├── hooks/           # Custom React hooks
+│   │   └── lib/             # API client, tRPC setup, utilities
+│   └── public/              # Static assets (resume PDF, images)
+├── server/                  # Express + tRPC backend
+│   ├── routers.ts           # API route definitions
+│   ├── storage.ts           # Data access layer
+│   └── _core/               # Server bootstrap, auth, middleware
+├── api/                     # Vercel serverless function handlers
+│   ├── testimonials/
+│   ├── blogs/
+│   └── admin/
+├── shared/                  # Shared between client and server
+│   ├── supabase.ts          # Supabase client + CRUD operations
+│   ├── substack.ts          # RSS feed parser + caching
+│   └── types.ts
+├── drizzle/                 # Legacy MySQL schema and migrations
+└── vercel.json              # Vercel routing and build config
 ```
 
-## 🗄️ Database Schema
+## Running Locally
 
-### Users Table
-- Stores authenticated users with OAuth integration
-- Fields: id, openId, name, email, role, createdAt, updatedAt
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed setup instructions, environment variables, API routes, and development commands.
 
-### Testimonials Table
-- Client and colleague testimonials
-- Fields: id, quote, author, role, company, isPublished, createdAt, updatedAt
-
-### Blogs Table
-- Blog posts and articles
-- Fields: id, title, excerpt, content, category, readTime, link, publishedDate, isPublished, createdAt, updatedAt
-
-## 🔐 Environment Variables
-
-Create a `.env` file with:
-
-```env
-# Database
-DATABASE_URL=mysql://user:password@localhost:3306/priyank_portfolio
-
-# JWT
-JWT_SECRET=your-secret-key-here
-
-# Node
-NODE_ENV=production
-
-# App Config
-VITE_APP_TITLE=Priyank Garg | Senior Product Manager Portfolio
-VITE_APP_LOGO=/logo.svg
-```
-
-For production, set these in your hosting platform's dashboard.
-
-## 🚢 Deployment
-
-### Option 1: Railway (Recommended)
-
-1. Go to [railway.app](https://railway.app)
-2. Connect your GitHub repository
-3. Add MySQL database plugin
-4. Set environment variables
-5. Deploy automatically
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
-
-### Option 2: Render
-
-1. Go to [render.com](https://render.com)
-2. Create new Web Service from GitHub
-3. Add PostgreSQL database
-4. Configure build and start commands
-5. Deploy
-
-### Option 3: Vercel + Planetscale
-
-1. Deploy frontend to Vercel
-2. Use Planetscale for MySQL
-3. Connect via DATABASE_URL
-
-## 🔄 GitHub Actions
-
-Automatic deployment on push to main branch:
-
-1. Add `RAILWAY_TOKEN` to GitHub Secrets
-2. Push to main
-3. GitHub Actions automatically builds and deploys
-
-## 📝 API Routes
-
-### Testimonials
-- `GET /api/trpc/testimonials.list` - Get all published testimonials
-- `POST /api/trpc/testimonials.create` - Create testimonial (admin only)
-- `PATCH /api/trpc/testimonials.update` - Update testimonial (admin only)
-- `DELETE /api/trpc/testimonials.delete` - Delete testimonial (admin only)
-
-### Blogs
-- `GET /api/trpc/blogs.list` - Get all published blogs
-- `POST /api/trpc/blogs.create` - Create blog (admin only)
-- `PATCH /api/trpc/blogs.update` - Update blog (admin only)
-- `DELETE /api/trpc/blogs.delete` - Delete blog (admin only)
-
-## 🧪 Testing
+Quick version:
 
 ```bash
-# Run tests
-pnpm test
-
-# Run tests in watch mode
-pnpm test -- --watch
-
-# Run specific test
-pnpm test server/auth.logout.test.ts
-```
-
-## 🔧 Development Commands
-
-```bash
-# Start dev server
-pnpm dev
-
-# Type check
-pnpm check
-
-# Format code
-pnpm format
-
-# Build
-pnpm build
-
-# Start production server
-pnpm start
-
-# Database migrations
-pnpm db:push
-
-# Generate database types
-pnpm db:generate
-```
-
-## 📚 Adding Testimonials
-
-### Via API (Programmatic)
-```typescript
-const result = await trpc.testimonials.create.mutate({
-  quote: "Priyank is an exceptional PM...",
-  author: "John Doe",
-  role: "VP Product",
-  company: "Tech Company Inc"
-});
-```
-
-### Via Database
-```sql
-INSERT INTO testimonials (quote, author, role, company, isPublished)
-VALUES (
-  "Priyank is an exceptional PM...",
-  "John Doe",
-  "VP Product",
-  "Tech Company Inc",
-  true
-);
-```
-
-## 📝 Adding Blog Posts
-
-### Via API
-```typescript
-const result = await trpc.blogs.create.mutate({
-  title: "Building Scalable Lending Platforms",
-  excerpt: "How we scaled from $10M to $250M...",
-  category: "Product Strategy",
-  readTime: "8 min read",
-  link: "https://substack.com/your-post",
-  publishedDate: new Date()
-});
-```
-
-## 🎨 Customization
-
-### Update Colors
-Edit `client/src/index.css` to change the color palette:
-- Primary: Blue-Purple (#6366f1 to #8b5cf6)
-- Secondary: Teal (#14b8a6)
-- Accent: Orange (#f97316)
-
-### Update Content
-Edit component files in `client/src/components/`:
-- `HeroSection.tsx` - Main hero with photo
-- `AboutSection.tsx` - About you
-- `ExperienceSection.tsx` - Work experience
-- `ProjectsSection.tsx` - GitHub projects
-- `SkillsSection.tsx` - Skills and expertise
-
-### Update Resume
-Replace `client/public/Priyank_Garg_CV.pdf` with your resume
-
-## 🐛 Troubleshooting
-
-### Database Connection Error
-```bash
-# Check DATABASE_URL format
-# Should be: mysql://user:password@host:port/database
-
-# Verify MySQL is running
-mysql -u root -p -e "SELECT 1;"
-```
-
-### Build Errors
-```bash
-# Clear cache and reinstall
-rm -rf node_modules pnpm-lock.yaml
+git clone https://github.com/prihu/priyank-portfolio.git
+cd priyank-portfolio
 pnpm install
-
-# Type check
-pnpm check
+cp .env.example .env    # Fill in Supabase credentials
+pnpm dev                # http://localhost:3000
 ```
 
-### Port Already in Use
-```bash
-# Kill process on port 3000
-lsof -ti:3000 | xargs kill -9
-```
+## Links
 
-## 📞 Support
+- **Portfolio:** [priyankgarg.com](https://priyankgarg.com)
+- **LinkedIn:** [linkedin.com/in/gargpriyank](https://www.linkedin.com/in/gargpriyank)
+- **Substack:** [productoped.substack.com](https://productoped.substack.com)
+- **GitHub:** [github.com/prihu](https://github.com/prihu)
+- **Email:** priyankgarg28@gmail.com
 
-For issues or questions:
-1. Check [DEPLOYMENT.md](./DEPLOYMENT.md) for deployment help
-2. Review GitHub Issues
-3. Check platform-specific docs (Railway, Render, etc.)
+## License
 
-## 📄 License
-
-MIT License - feel free to use this as a template for your own portfolio
-
-## 🙏 Acknowledgments
-
-Built with React, Express, Tailwind CSS, and Framer Motion.
-
----
-
-**Ready to impress MAANG companies?** Deploy this portfolio and start sharing your link with recruiters!
+MIT
