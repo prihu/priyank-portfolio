@@ -27,7 +27,7 @@ The portfolio is structured as a narrative — not a resume dump. Each section b
 |-------------|----------------------------------------------------------|
 |Frontend     |React 19, TypeScript, Tailwind CSS 4, Framer Motion       |
 |Backend      |Express.js, tRPC, Vercel Serverless Functions             |
-|Database     |Supabase (PostgreSQL) for testimonials and blog visibility|
+|Database     |Neon PostgreSQL for testimonials and blog visibility    |
 |Content      |Substack RSS feed integration with server-side caching    |
 |UI Components|Radix UI, shadcn/ui, Lucide icons                         |
 |Deployment   |Vercel (auto-deploy from `main`)                          |
@@ -35,8 +35,8 @@ The portfolio is structured as a narrative — not a resume dump. Each section b
 
 ## Key Technical Decisions
 
-- **Supabase over raw MySQL** — Moved from Drizzle/MySQL to Supabase for simpler auth, real-time capabilities, and free-tier hosting. Legacy Drizzle schema retained for local dev.
-- **Substack RSS as blog CMS** — Blog posts are fetched live from Substack’s RSS feed with a 5-minute server cache. Supabase manages per-post visibility toggles so the admin can hide/show posts without touching Substack.
+- **Neon PostgreSQL over Supabase** — Migrated from Supabase to Neon for its generous free tier (20 projects), native Vercel integration, and serverless driver optimized for edge/serverless functions. Legacy Drizzle schema retained for local dev.
+- **Substack RSS as blog CMS** — Blog posts are fetched live from Substack's RSS feed with a 5-minute server cache. Neon manages per-post visibility toggles so the admin can hide/show posts without touching Substack.
 - **Vercel serverless API** — Separate serverless handlers under `/api/` for testimonials, blogs, and admin auth — no long-running Express server needed in production.
 - **Admin panel with password auth** — Lightweight admin dashboard at `/admin` for managing testimonials and blog visibility. JWT-based session with cookie auth.
 
@@ -61,7 +61,7 @@ priyank-portfolio/
 │   ├── blogs/
 │   └── admin/
 ├── shared/                  # Shared between client and server
-│   ├── supabase.ts          # Supabase client + CRUD operations
+│   ├── db.ts               # Neon PostgreSQL client + CRUD operations
 │   ├── substack.ts          # RSS feed parser + caching
 │   └── types.ts
 ├── drizzle/                 # Legacy MySQL schema and migrations
@@ -78,7 +78,7 @@ Quick version:
 git clone https://github.com/prihu/priyank-portfolio.git
 cd priyank-portfolio
 pnpm install
-cp .env.example .env    # Fill in Supabase credentials
+cp .env.example .env    # Fill in Neon DATABASE_URL
 pnpm dev                # http://localhost:3000
 ```
 

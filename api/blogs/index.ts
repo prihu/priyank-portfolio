@@ -1,20 +1,16 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import RssParser from "rss-parser";
-import { createClient } from "@supabase/supabase-js";
+import { neon } from "@neondatabase/serverless";
 
 const parser = new RssParser();
 const SUBSTACK_FEED = "https://productoped.substack.com/feed";
 const SUBSTACK_URL = "https://productoped.substack.com";
 
-const supabaseUrl = process.env.SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_ANON_KEY || "";
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const databaseUrl = process.env.DATABASE_URL || process.env.NEON_DATABASE_URL || "";
 
-function getSupabase(useServiceKey = false) {
-    if (!supabaseUrl) return null;
-    const key = useServiceKey && supabaseServiceKey ? supabaseServiceKey : supabaseKey;
-    if (!key) return null;
-    return createClient(supabaseUrl, key);
+function getDb() {
+    if (!databaseUrl) return null;
+    return neon(databaseUrl);
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -25,24 +21,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             const feed = await parser.parseURL(SUBSTACK_FEED);
             console.log(`Fetched ${feed.items.length} items from RSS`);
 
-            // Get visibility settings from Supabase if available
-            const supabase = getSupabase();
+            // Get visibility settings from Neon if available
+            const sql = getDb();
             let visibilityMap: Record<string, boolean> = {};
 
-            if (supabase) {
-                const { data, error } = await supabase
-                    .from("blog_visibility")
-                    .select("substack_id, is_visible");
+            if (sql) {
+                try {
+                    const data = await sql`
+                        SELECT substack_id, is_visible FROM blog_visibility
+                    `;
 
-                if (error) {
-                    console.error("Supabase error fetching visibility:", error);
-                }
-
-                if (data) {
-                    visibilityMap = data.reduce((acc, item) => {
-                        acc[item.substack_id] = item.is_visible;
-                        return acc;
-                    }, {} as Record<string, boolean>);
+                    if (data) {
+                        visibilityMap = data.reduce((acc: Record<string, boolean>, item: any) => {
+                            acc[item.substack_id] = item.is_visible;
+                            return acc;
+                        }, {} as Record<string, boolean>);
+                    }
+                } catch (error) {
+                    console.error("DB error fetching visibility:", error);
                 }
             }
 
@@ -96,8 +92,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const supabase = getSupabase(true); // Try Service Key first, falls back to anon
-        if (!supabase) {
+        const sql = getDb();
+        if (!sql) {
             return res.status(500).json({ error: "Database not configured" });
         }
 
@@ -109,18 +105,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         console.log(`Updating visibility for ${substackId} to ${isVisible}`);
 
-        // Use the RPC function (SECURITY DEFINER) to bypass RLS
-        const { data, error } = await supabase.rpc("set_blog_visibility", {
-            p_substack_id: substackId,
-            p_title: title || "",
-            p_is_visible: isVisible,
-        });
-
-        if (error) {
-            console.error("Supabase RPC error:", error);
+        try {
+            // Direct SQL upsert — replaces the Supabase RPC function
+            const data = await sql`
+                INSERT INTO blog_visibility (substack_id, title, is_visible, updated_at)
+                VALUES (${substackId}, ${title || ""}, ${isVisible}, NOW())
+                ON CONFLICT (substack_id)
+                DO UPDATE SET
+                    is_visible = EXCLUDED.is_visible,
+                    title = EXCLUDED.title,
+                    updated_at = NOW()
+                RETURNING *
+            `;
+            return res.json(data[0]);
+        } catch (error: any) {
+            console.error("DB error:", error);
             return res.status(500).json({ error: error.message });
         }
-        return res.json(data);
     }
 
     return res.status(405).json({ error: "Method not allowed" });

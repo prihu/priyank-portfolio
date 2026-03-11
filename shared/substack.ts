@@ -1,5 +1,5 @@
 import Parser from 'rss-parser';
-import { getBlogVisibility, type BlogVisibility } from './supabase';
+import { getBlogVisibility, type BlogVisibility } from './db';
 
 const SUBSTACK_RSS_URL = 'https://productoped.substack.com/feed';
 

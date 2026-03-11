@@ -1,35 +1,34 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { createClient } from "@supabase/supabase-js";
+import { neon } from "@neondatabase/serverless";
 
-const supabaseUrl = process.env.SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_ANON_KEY || "";
+const databaseUrl = process.env.DATABASE_URL || process.env.NEON_DATABASE_URL || "";
 
-function getSupabase() {
-    if (!supabaseUrl || !supabaseKey) {
+function getDb() {
+    if (!databaseUrl) {
         return null;
     }
-    return createClient(supabaseUrl, supabaseKey);
+    return neon(databaseUrl);
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-    const supabase = getSupabase();
+    const sql = getDb();
 
-    if (!supabase) {
+    if (!sql) {
         return res.status(500).json({ error: "Database not configured" });
     }
 
     // GET - List all testimonials (public, only published ones)
     if (req.method === "GET") {
-        const { data, error } = await supabase
-            .from("testimonials")
-            .select("*")
-            .eq("is_published", true)
-            .order("created_at", { ascending: false });
-
-        if (error) {
+        try {
+            const data = await sql`
+                SELECT * FROM testimonials
+                WHERE is_published = true
+                ORDER BY created_at DESC
+            `;
+            return res.json(data || []);
+        } catch (error: any) {
             return res.status(500).json({ error: error.message });
         }
-        return res.json(data || []);
     }
 
     // For write operations, check admin auth
@@ -48,16 +47,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
-        const { data, error } = await supabase
-            .from("testimonials")
-            .insert([{ quote, author, role, company, is_published: true }])
-            .select()
-            .single();
-
-        if (error) {
+        try {
+            const data = await sql`
+                INSERT INTO testimonials (quote, author, role, company, is_published)
+                VALUES (${quote}, ${author}, ${role}, ${company}, true)
+                RETURNING *
+            `;
+            return res.status(201).json(data[0]);
+        } catch (error: any) {
             return res.status(500).json({ error: error.message });
         }
-        return res.status(201).json(data);
     }
 
     // PUT - Update testimonial
@@ -68,17 +67,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return res.status(400).json({ error: "Missing testimonial ID" });
         }
 
-        const { data, error } = await supabase
-            .from("testimonials")
-            .update({ ...updates, updated_at: new Date().toISOString() })
-            .eq("id", id)
-            .select()
-            .single();
-
-        if (error) {
+        try {
+            const data = await sql`
+                UPDATE testimonials
+                SET
+                    quote = COALESCE(${updates.quote ?? null}, quote),
+                    author = COALESCE(${updates.author ?? null}, author),
+                    role = COALESCE(${updates.role ?? null}, role),
+                    company = COALESCE(${updates.company ?? null}, company),
+                    is_published = COALESCE(${updates.is_published ?? null}, is_published),
+                    updated_at = NOW()
+                WHERE id = ${id}
+                RETURNING *
+            `;
+            return res.json(data[0]);
+        } catch (error: any) {
             return res.status(500).json({ error: error.message });
         }
-        return res.json(data);
     }
 
     // DELETE - Delete testimonial
@@ -89,15 +94,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return res.status(400).json({ error: "Missing testimonial ID" });
         }
 
-        const { error } = await supabase
-            .from("testimonials")
-            .delete()
-            .eq("id", id);
-
-        if (error) {
+        try {
+            await sql`DELETE FROM testimonials WHERE id = ${id}`;
+            return res.json({ success: true });
+        } catch (error: any) {
             return res.status(500).json({ error: error.message });
         }
-        return res.json({ success: true });
     }
 
     return res.status(405).json({ error: "Method not allowed" });

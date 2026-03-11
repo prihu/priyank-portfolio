@@ -2,11 +2,11 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, InsertTestimonial, testimonials, InsertBlog, blogs } from "../drizzle/schema";
 import { ENV } from './_core/env';
-import * as supabaseDb from '../shared/supabase';
+import * as neonDb from '../shared/db';
 import { getVisiblePosts, getAllPostsForAdmin, type SubstackPost } from '../shared/substack';
 
-// Check if we're using Supabase
-const USE_SUPABASE = !!(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY);
+// Check if we're using Neon PostgreSQL
+const USE_NEON = !!(process.env.DATABASE_URL || process.env.NEON_DATABASE_URL);
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -94,10 +94,10 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// Testimonials queries - Now uses Supabase when available
+// Testimonials queries - Uses Neon PostgreSQL when available
 export async function getAllTestimonials() {
-  if (USE_SUPABASE) {
-    return supabaseDb.getAllTestimonials();
+  if (USE_NEON) {
+    return neonDb.getAllTestimonials();
   }
 
   const db = await getDb();
@@ -107,8 +107,8 @@ export async function getAllTestimonials() {
 }
 
 export async function createTestimonial(data: InsertTestimonial) {
-  if (USE_SUPABASE) {
-    return supabaseDb.createTestimonial({
+  if (USE_NEON) {
+    return neonDb.createTestimonial({
       quote: data.quote,
       author: data.author,
       role: data.role,
@@ -125,8 +125,8 @@ export async function createTestimonial(data: InsertTestimonial) {
 }
 
 export async function updateTestimonial(id: number, data: Partial<InsertTestimonial>) {
-  if (USE_SUPABASE) {
-    return supabaseDb.updateTestimonial(id, {
+  if (USE_NEON) {
+    return neonDb.updateTestimonial(id, {
       quote: data.quote,
       author: data.author,
       role: data.role,
@@ -142,8 +142,8 @@ export async function updateTestimonial(id: number, data: Partial<InsertTestimon
 }
 
 export async function deleteTestimonial(id: number) {
-  if (USE_SUPABASE) {
-    return supabaseDb.deleteTestimonial(id);
+  if (USE_NEON) {
+    return neonDb.deleteTestimonial(id);
   }
 
   const db = await getDb();
